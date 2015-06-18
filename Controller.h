@@ -1,0 +1,21 @@
+#ifndef MVC_CONTROLLER_H
+#define MVC_CONTROLLER_H
+
+#include "Command.h"
+class Model;
+
+class Controller {
+public:
+  Controller(Model*);
+  void play(Card);
+  void discard(Card);
+  void deck();
+  void quit();
+  void ragequit();
+  void outputIfHumanPlayer();
+  void cpuTurn();
+private:
+  Model *model_;
+};
+
+#endif
