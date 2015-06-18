@@ -30,7 +30,10 @@ private:
 	void cpuPlayOrDiscard();
 	bool legalCardLookup(Card);
 	void incrCurrentPlayer();
+	void checkEndGame();
+	void outputEndGame();
 	std::vector<std::string> playerTypes_;
+	int passes_ = 0; // for how many players are done
 	Table* game_;
 	Deck* deck_;
 	bool outputHuman_ = true; // This is used to skip outputting if it is false

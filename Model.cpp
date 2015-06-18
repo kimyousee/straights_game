@@ -11,6 +11,12 @@ namespace {
 		cout << ranks[rank];
 	} 
 
+	void printIntsToCard(int rank, int suit) {
+		string suits[SUIT_COUNT] = {"C", "D", "H", "S"};
+		string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
+		"7", "8", "9", "10", "J", "Q", "K"};
+		cout << ranks[rank] << suits[suit];
+	}
 }
 
 void Model::initializeTable() {
@@ -64,10 +70,12 @@ void Model::play(Card card){
 	int suit = card.getSuitInt();
 	int rank = card.getRankInt();
 	vector<vector<int> >& played = *(game_->getPlayedCards());
+	Player* curPlayer = game_->currentPlayer();
 
 	// Get card from player's hand
 	Card* playerCard;
-	vector<Card*> hand = game_->currentPlayer()->getPlayerHand();
+	vector<Card*> hand = curPlayer->getPlayerHand();
+
 	for (vector<Card*>::iterator it = hand.begin(); it!=hand.end(); it++){
 		if( (**it) == card )  playerCard = *it;
 	}
@@ -92,6 +100,7 @@ void Model::play(Card card){
 		outputHuman_ = false;
 		// note it's still the same person's turn
 	}
+	checkEndGame();
 }
 
 void Model::discard(Card card){
@@ -124,6 +133,7 @@ void Model::discard(Card card){
 
 		incrCurrentPlayer();
 	}
+	checkEndGame();
 }
 
 // Prints out the deck
@@ -140,6 +150,24 @@ void Model::ragequit(){
 	// cout << "After making cpu, before replace" << endl;
 	// game_->replacePlayerWithCPU(cpu);
 	// cout << "done" << endl;
+}
+
+void Model::checkEndGame(){
+	vector<Card*> nextHand = game_->currentPlayer()->getPlayerHand();
+	// If the next player is out of the game, proceed to next player
+	if (nextHand.size() == 0) {
+		while (nextHand.size() == 0){
+			passes_ += 1;
+			if (passes_ == 4){
+				outputEndGame();
+				break;
+			}
+			incrCurrentPlayer();
+			nextHand = game_->currentPlayer()->getPlayerHand();
+
+		}
+		passes_ = 0;
+	}
 }
 
 void Model::cpuTurn(){
@@ -200,7 +228,7 @@ void Model::outputIfHumanPlayer(){
 			for(int j = 0; j<13; j++){
 				if (played[i][j] == 1) { // when card is on the table
 					printIntsToRank(j);
-					cout << " ";
+					if (j != 12) cout << " ";
 				}
 			}
 			cout << endl;
@@ -209,17 +237,63 @@ void Model::outputIfHumanPlayer(){
 		cout << "Your hand: ";
 		vector<Card*> hand = game_->currentPlayer()->getPlayerHand();
 		for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
-			cout << (**it) << " " ;
+			cout << (**it);
+			if (it != hand.end()-1) cout << " " ;
 		}
 		cout << endl;
 		
 		cout << "Legal plays: ";
 		for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
 			if (legalCardLookup(**it)){
-				cout << (**it) << " " ;
+				cout << (**it);
+				if (it != hand.end()-1) cout << " " ;
 			}
 		}
 		cout << endl;
+	}
+}
+
+void Model::outputEndGame(){
+	vector<Player*> players = game_->players();
+	int points[4];
+	bool end = false;
+	for(int i = 0; i < 4; i++){
+		Player* p = players[i];
+
+		cout << "Player " << i+1 << "\'s discards: ";
+		vector<Card*> discarded = p->getDiscardedHand();
+		for(vector<Card*>::iterator it = discarded.begin(); it != discarded.end(); it++){
+			printIntsToCard((*it)->getRankInt(), (*it)->getSuitInt());
+			if (it != discarded.end() - 1) cout << " ";
+		}
+		cout << "Player " << i+1 << "\'s score: ";
+		int oldPoints = p->getPlayerPoints();
+		int newPoints = discarded.size()+1;
+		p->addPlayerPoints(newPoints);
+
+		points[p->getPlayerNumber()-1] = p->getPlayerPoints();
+		if (p->getPlayerPoints() >= 80) end = true;
+
+		cout << oldPoints << " + " << newPoints << " = " << p->getPlayerPoints() << endl;
+	}
+	// Check for the winner
+	if (end){
+		int lowest = points[0];
+		int lowestPlayer[4] = {1,0,0,0};
+		for (int i = 1; i < 4; i++){
+			if (points[i] < lowest) {
+				lowest = points[i];
+				fill(lowestPlayer, lowestPlayer+4, 0); // reset array to 0s
+				lowestPlayer[i] = 1;
+			} else if (points[i] == lowest){
+				lowestPlayer[i] = 1;
+			}
+		}
+		for (int i = 0; i < 4; i++){
+			if (lowestPlayer[i] == 1){
+				cout << "Player " << i+1 << " wins!" << endl;
+			}
+		}
 	}
 }
 
