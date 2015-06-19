@@ -32,7 +32,7 @@ public:
 
 private:
 	std::vector<Player*> listOfPlayers_;
-	Deck* gameDeck_; //change name after?
+	// Deck* gameDeck_; //change name after?
 	// The array of played cards.
 	// This decides which cards can and cannot be played
 	//   0 = not a legal move

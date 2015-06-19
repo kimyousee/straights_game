@@ -23,7 +23,7 @@ public:
 
 	virtual std::string getPlayerType() const = 0; //Computer or Human
 
-	void resetPlayer(); // reset all card info for the next round
+	int calcPlayerPoints(); // reset all card info for the next round
 protected:
 	int playerNumber_;
 	int playerPoints_;

@@ -73,21 +73,14 @@ void Player::decrementPlayerHand(Card* card) {
 	}
 }
 
-// virtual string Player::getPlayerType() const = 0; //Computer or Human // why ?
-
 // reset all card info for the next round
-void Player::resetPlayer() {
-	for (vector<Card* >::iterator it = playerHand_.begin() ; it != playerHand_.end(); ++it) {
-    	delete (*it);
-   	} 
-   	playerHand_.clear();
-
+int Player::calcPlayerPoints() {
    	int tempPoints = 0;
    	for (vector<Card*>::iterator it = playerDiscards_.begin() ; it != playerDiscards_.end(); ++it) {
    		tempPoints += (*it)->getRankInt();
-    	delete (*it);
    	} 
 
-   	addPlayerPoints(tempPoints);
-   	playerDiscards_.clear();
+   	// addPlayerPoints(tempPoints);
+   	//playerDiscards_.clear();
+   	return (tempPoints);
 } 
