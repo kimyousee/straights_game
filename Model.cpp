@@ -6,11 +6,10 @@ using namespace std;
 
 namespace {
 	void printIntsToRank(int rank){
-	    string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
+		string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "J", "Q", "K"};
 		cout << ranks[rank];
 	} 
-
 }
 
 void Model::initializeTable() {
@@ -160,7 +159,7 @@ void Model::cpuTurn(){
 	if (curPlayer->getPlayerType() == "h") { return; }
 
 	// while(!game_->getReset() && game_->currentPlayer()->getPlayerType() == "c"){
-	while(game_->currentPlayer()->getPlayerType() == "c"){
+	while(!(game_->end()) && game_->currentPlayer()->getPlayerType() == "c"){
 		cpuPlayOrDiscard_();
 	}
 }
@@ -291,6 +290,8 @@ void Model::outputEndGame_(){
 				cout << "Player " << i+1 << " wins!" << endl;
 			}
 		}
+		game_->setEnd(true); // end the game
+		exit(0);
 	} else {
 		game_->setReset(true);
 		cout << "Starting a new game" << endl;

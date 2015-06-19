@@ -26,6 +26,8 @@ public:
 	bool getReset(){return reset_;}
 	void setReset(bool b) {reset_ = b;}
 	void reset();
+	void setEnd(bool b) {end_ = b;}
+	bool end(){return end_;}
 	//vector<Deck> getPlayedCards();
 
 private:
@@ -40,6 +42,7 @@ private:
 	std::vector<std::vector<int> >* playedCards_;
 	Player* currentPlayer_;
 	bool reset_ = false; // set this to true when we start a new game
+	bool end_ = false;
 };
 
 #endif

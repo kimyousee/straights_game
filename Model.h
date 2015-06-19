@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include "Player.h"
 #include "Card.h"
 #include "Deck.h"
