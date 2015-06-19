@@ -133,17 +133,11 @@ void Model::quit(){}
 
 // When a human player leaves, we must replace it by a ComputerPlayer
 void Model::ragequit(){
+	cout << endl;
 	cout << "Player " << game_->currentPlayer()->getPlayerNumber() << " ragequits. A computer will now take over." << endl; 
-	// Player* curPlayer = game_->currentPlayer();
-	// cout << "Before making cpu" << endl;
-	// ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
-	// cout << "After making cpu, before replace" << endl;
-	// game_->replacePlayerWithCPU(cpu);
-	// cout << "done" << endl;
-
-
-
-
+	Player* curPlayer = game_->currentPlayer();
+	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
+	game_->replacePlayerWithCPU(cpu);
 }
 
 void Model::checkEndGame_(){
