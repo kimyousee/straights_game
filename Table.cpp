@@ -44,9 +44,11 @@ void Table::playCard(Card* card) {
 	if (rank >= 1 && cards[suit][rank-1] != 1) cards[suit][rank-1] = 2;
 
 	// Set legal plays for this card's suit
-	for (int i = 0; i <= 3; i++){
-		if (cards[i][rank] != 1) {
-			cards[i][rank] = 2;
+	if (rank == 6) {
+		for (int i = 0; i <= 3; i++){
+			if (cards[i][rank] != 1) {
+				cards[i][rank] = 2;
+			}
 		}
 	}
 	cards[suit][rank] = 1;

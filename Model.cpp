@@ -138,6 +138,7 @@ void Model::ragequit(){
 	Player* curPlayer = game_->currentPlayer();
 	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
 	game_->replacePlayerWithCPU(cpu);
+	cout << "aiyaa why? " << endl;
 }
 
 void Model::checkEndGame_(){
