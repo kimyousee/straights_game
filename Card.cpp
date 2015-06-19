@@ -19,34 +19,11 @@ Rank Card::getRank() const{
 // Returns an int corresponding to the Rank
 // Needed for accessing the array of played cards
 int Card::getRankInt() const{
-	// switch (rank_){
-	// 	case ACE: return 0; break;
-	// 	case TWO: return 1; break;
-	// 	case THREE: return 2; break;
-	// 	case FOUR: return 3; break;
-	// 	case FIVE: return 4; break;
-	// 	case SIX: return 5; break;
-	// 	case SEVEN: return 6; break;
-	// 	case EIGHT: return 7; break;
-	// 	case NINE: return 8; break;
-	// 	case TEN: return 9; break;
-	// 	case JACK: return 10; break;
-	// 	case QUEEN: return 11; break;
-	// 	case KING: return 12; break;
-	// 	default: break;
-	// }
 	int rank = rank_;
 	return rank;
 }
 
 int Card::getSuitInt() const{
-	// switch (suit_){
-	// 	case CLUB: return 0; break;
-	// 	case DIAMOND: return 1; break;
-	// 	case HEART: return 2; break;
-	// 	case SPADE: return 3; break;
-	// 	default: break;
-	// }
 	int suit = suit_;
 	return suit;
 }

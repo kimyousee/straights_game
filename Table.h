@@ -23,6 +23,9 @@ public:
 	int findStartingPlayer();
 	void changeCurPlayerOnTable(int);
 	void replacePlayerWithCPU(ComputerPlayer*);
+	bool getReset(){return reset_;}
+	void setReset(bool b) {reset_ = b;}
+	void reset();
 	//vector<Deck> getPlayedCards();
 
 private:
@@ -36,6 +39,7 @@ private:
 	// int playedCards_[4][13] = {0};
 	std::vector<std::vector<int> >* playedCards_;
 	Player* currentPlayer_;
+	bool reset_ = false; // set this to true when we start a new game
 };
 
 #endif

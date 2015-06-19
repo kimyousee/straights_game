@@ -27,16 +27,18 @@ public:
 
 
 private:
-	void cpuPlayOrDiscard();
-	bool legalCardLookup(Card);
-	void incrCurrentPlayer();
-	void checkEndGame();
-	void outputEndGame();
+	void cpuPlayOrDiscard_();
+	bool legalCardLookup_(Card);
+	void incrCurrentPlayer_();
+	void checkEndGame_();
+	void outputEndGame_();
 	std::vector<std::string> playerTypes_;
 	int passes_ = 0; // for how many players are done
 	Table* game_;
 	Deck* deck_;
-	bool outputHuman_ = true; // This is used to skip outputting if it is false
+	// This is used to skip outputting if it is false
+	bool outputHuman_ = true;
+	int seed_;
 };
 
 #endif

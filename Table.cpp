@@ -41,7 +41,7 @@ void Table::playCard(Card* card) {
 	vector<vector<int> >& cards = *getPlayedCards();
 	// Set legal plays for adjacent cards
 	if (rank <= 11 && cards[suit][rank+1] != 1) cards[suit][rank+1] = 2;
-	if (rank >= 2 && cards[suit][rank-1] != 1) cards[suit][rank-1] = 2;
+	if (rank >= 1 && cards[suit][rank-1] != 1) cards[suit][rank-1] = 2;
 
 	// Set legal plays for this card's suit
 	for (int i = 0; i <= 3; i++){
@@ -79,4 +79,11 @@ void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
 	Player* temp = listOfPlayers_[index];
 	listOfPlayers_[index] = cpu;
 	delete temp;
+}
+
+void Table::reset(){
+	for (vector<vector<int> >::iterator it = (*playedCards_).begin(); it != (*playedCards_).end(); it++){
+		fill((*it).begin(), (*it).end(), 0);
+	}
+	(*playedCards_)[3][6] = 2; // Make 7S spot a legal play
 }

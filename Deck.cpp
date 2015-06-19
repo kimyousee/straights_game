@@ -46,11 +46,19 @@ void Deck::dealCards(std::vector<Player*> players) {
 
 void Deck::printDeck(){
 
-	for (int i = 0; i < 52; i++){
-		if (i!= 0 && i % 13 == 0) cout << endl;
-		cout << *cards_[i] << " ";
+	// for (int i = 1; i <= 52; i++){
+	// 	if (i!= 1 && i % 13 == 0) cout << endl;
+	// 	cout << *cards_[i-1] << " ";
+	// }
+	// cout << endl;
+	int card = 0;
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 13; j++){
+			cout << *cards_[card] << " ";
+			card++;
+		}
+		cout << endl;
 	}
-	cout << endl;
 }
 
 // CARD_COUNT is the constant 52

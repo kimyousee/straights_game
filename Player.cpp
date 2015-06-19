@@ -59,11 +59,11 @@ void Player::incrementDiscardedHand(Card* card) {
 
 void Player::decrementPlayerHand(Card* card) {
 	int i = 0;
-	for (vector<Card*>::iterator it = playerHand_.begin() ; it != playerHand_.end(); ++it) {
-		if ( (*it) == card ) {
-			delete (*it);
+	for (vector<Card*>::iterator it = playerHand_.begin() ; it != playerHand_.end();) {
+		if ( (**it) == *card ) {
+			// delete (*it);
 			playerHand_.erase( playerHand_.begin() + i );
-		}
+		} else it++;
 		i++;
 		/*if ( ((*it)->getSuitInt() == card.getSuitInt()) && ((*it)->getRankInt() == card.getRankInt()) ) {
 			//incrementDiscardedHand(card);
