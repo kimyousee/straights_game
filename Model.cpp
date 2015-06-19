@@ -133,12 +133,12 @@ void Model::quit(){}
 
 // When a human player leaves, we must replace it by a ComputerPlayer
 void Model::ragequit(){
-	// Player* curPlayer = game_->currentPlayer();
-	// cout << "Before making cpu" << endl;
-	// ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
-	// cout << "After making cpu, before replace" << endl;
-	// game_->replacePlayerWithCPU(cpu);
-	// cout << "done" << endl;
+	cout << endl;
+	cout << "Player " << game_->currentPlayer()->getPlayerNumber() << " ragequits. A computer will now take over." << endl; 
+	Player* curPlayer = game_->currentPlayer();
+	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
+	game_->replacePlayerWithCPU(cpu);
+	cout << "aiyaa why? " << endl;
 }
 
 void Model::checkEndGame_(){
@@ -209,13 +209,13 @@ void Model::outputIfHumanPlayer(){
 	if (game_->currentPlayer()->getPlayerType() == "h"){
 		vector<vector<int> >& played = *(game_->getPlayedCards());
 		
-		// // For debugging the playedCards_ vector
-		// for (int i = 0; i < 4; i++){
-		// 	for (int j = 0; j < 13; j++){
-		// 		cout << played[i][j] << " ";
-		// 	}
-		// 	cout << endl;
-		// }
+		//// For debugging the playedCards_ vector
+		//for (int i = 0; i < 4; i++){
+		//	for (int j = 0; j < 13; j++){
+		//		cout << played[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
 
 
 		cout << "Cards on the table:" << endl;
@@ -259,18 +259,17 @@ void Model::outputEndGame_(){
 	bool end = false;
 	for(int i = 0; i < 4; i++){
 		Player* p = players[i];
-
 		cout << "Player " << i+1 << "\'s discards: ";
 		vector<Card*> discarded = p->getDiscardedHand();
 		for(vector<Card*>::iterator it = discarded.begin(); it != discarded.end(); it++){
-			cout << (**it) ;
+			cout << (**it);
 			if (it != discarded.end() - 1) cout << " ";
 		}
 		cout << endl;
-
 		cout << "Player " << i+1 << "\'s score: ";
 		int oldPoints = p->getPlayerPoints();
-		int newPoints = discarded.size();
+		int newPoints = p->calcPlayerPoints();
+
 		p->addPlayerPoints(newPoints);
 
 		points[p->getPlayerNumber()-1] = p->getPlayerPoints();

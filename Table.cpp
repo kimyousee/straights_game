@@ -44,9 +44,11 @@ void Table::playCard(Card* card) {
 	if (rank >= 1 && cards[suit][rank-1] != 1) cards[suit][rank-1] = 2;
 
 	// Set legal plays for this card's suit
-	for (int i = 0; i <= 3; i++){
-		if (cards[i][rank] != 1) {
-			cards[i][rank] = 2;
+	if (rank == 6) {
+		for (int i = 0; i <= 3; i++){
+			if (cards[i][rank] != 1) {
+				cards[i][rank] = 2;
+			}
 		}
 	}
 	cards[suit][rank] = 1;
@@ -75,10 +77,13 @@ void Table::changeCurPlayerOnTable(int newCurrent){
 
 // the cpu passed in should have been constructed with the player passed in
 void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
-	int index = currentPlayerNumber();
+	cout << "T:replacePlayerWithCPU: " << cpu->getPlayerType() << endl;
+	int index = currentPlayerNumber()-1;
 	Player* temp = listOfPlayers_[index];
 	listOfPlayers_[index] = cpu;
 	delete temp;
+	currentPlayer_ = cpu;
+	cout << "T:replacePlayerWithCPU: " << listOfPlayers_[index]->getPlayerType() << endl;
 }
 
 void Table::reset(){
