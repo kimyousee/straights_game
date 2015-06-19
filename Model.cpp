@@ -126,6 +126,7 @@ void Model::discard(Card card){
 // Prints out the deck
 void Model::deck(){
 	deck_->printDeck();
+	outputHuman_ = false;
 }
 
 void Model::quit(){}

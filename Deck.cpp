@@ -16,13 +16,13 @@ Deck::Deck(int seed) {
 
 	for (int i = 0; i < 52; i++){
 		int j = 0;
-		while (j < 4) {
+		while (j < 13) {
 			cards_.push_back(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
 			j++;
-			suit = j;
+			rank = j;
 		}
-		suit = CLUB;
-		rank++;
+		suit++;
+		rank = ACE;
 	}
 }
 
