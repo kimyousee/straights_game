@@ -9,23 +9,24 @@
 #include "Deck.h"
 #include "Table.h"
 
+// Model controls the game and holds all logic
 class Model {
 public:
 	Model(){};
 	~Model(){delete game_;}
-	//Table* getTable();
 
+	// Commands called from controller
 	void start(int);
 	void play(Card card);
 	void discard(Card card);
 	void deck();
 	void quit();
 	void ragequit();
-	void cpuTurn();
 
+	// Not commands but called from controller
 	void initializeTable();
 	void outputIfHumanPlayer();
-
+	void cpuTurn();
 
 private:
 	void cpuPlayOrDiscard_();
@@ -33,13 +34,15 @@ private:
 	void incrCurrentPlayer_();
 	void checkEndGame_();
 	void outputEndGame_();
+
 	std::vector<std::string> playerTypes_;
-	int passes_ = 0; // for how many players are done
 	Table* game_;
 	Deck* deck_;
+
+	int passes_ = 0; // for how many players are done
 	// This is used to skip outputting if it is false
 	bool outputHuman_ = true;
-	int seed_;
+	int seed_; // For Deck's shuffle
 };
 
 #endif

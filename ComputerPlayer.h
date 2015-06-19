@@ -4,16 +4,18 @@
 #include "Player.h"
 #include <string>
 
+// The computer plays and discards cards automatically
+//
+// Specified at the beginning of the game
+// or when a human player rage quits
 class ComputerPlayer : public Player {
 public:
-    ComputerPlayer(int playerNumber);
-    ComputerPlayer(Player &player);
-    ~ComputerPlayer(){};
+	ComputerPlayer(int playerNumber);
+	ComputerPlayer(Player &player);
+	~ComputerPlayer(){};
 
-    virtual std::string getPlayerType() const;
+	virtual std::string getPlayerType() const;
 
-    //void playCard(Table* table);
-    //void discardCard(Table* table);
 };
 
 #endif

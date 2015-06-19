@@ -6,8 +6,6 @@ using namespace std;
 
 int CARD_COUNT = 52;
 
-using namespace std;
-
 // Deck constructor
 Deck::Deck(int seed) {
 	int suit = CLUB;
@@ -45,16 +43,11 @@ void Deck::dealCards(std::vector<Player*> players) {
 
 
 void Deck::printDeck(){
-
-	// for (int i = 1; i <= 52; i++){
-	// 	if (i!= 1 && i % 13 == 0) cout << endl;
-	// 	cout << *cards_[i-1] << " ";
-	// }
-	// cout << endl;
 	int card = 0;
 	for (int i = 0; i < 4; i++){
 		for (int j = 0; j < 13; j++){
-			cout << *cards_[card] << " ";
+			cout << *cards_[card];
+			if (j != 12) cout << " "; // no space at end of line
 			card++;
 		}
 		cout << endl;

@@ -10,21 +10,9 @@ Player::Player(int playerNumber, string playerType) {
 	playerNumber_ = playerNumber;
 	playerPoints_ = 0;
 	playerType_ = playerType;
-	//playerHand_ = NULL;
-	//playerDiscards_ = NULL;
 }
 
-Player::~Player() {
-	// while (!playerHand_.empty()) {
-	// 	delete playerHand_.back();
-	// 	playerHand_.pop_back();
-	// }
-
-	// while (!playerDiscards_.empty()) {
-	// 	delete playerDiscards_.back();
-	// 	playerDiscards_.pop_back();
-	// }
-}
+Player::~Player() {}
 
 int Player::getPlayerPoints() {
 	return playerPoints_;
@@ -48,12 +36,10 @@ vector<Card*> Player::getDiscardedHand() {
 
 
 void Player::incrementPlayerHand(Card* card) {
-	// Card* newCard = new Card(card.getSuit(), card.getRank());
 	playerHand_.push_back(card);
 }
 
 void Player::incrementDiscardedHand(Card* card) {
-	// Card* newCard = new Card(card.getSuit(), card.getRank());
 	playerDiscards_.push_back(card);
 }
 
@@ -61,26 +47,21 @@ void Player::decrementPlayerHand(Card* card) {
 	int i = 0;
 	for (vector<Card*>::iterator it = playerHand_.begin() ; it != playerHand_.end();) {
 		if ( (**it) == *card ) {
-			// delete (*it);
 			playerHand_.erase( playerHand_.begin() + i );
 		} else it++;
 		i++;
-		/*if ( ((*it)->getSuitInt() == card.getSuitInt()) && ((*it)->getRankInt() == card.getRankInt()) ) {
-			//incrementDiscardedHand(card);
-			delete (*it);
-			playerHand_.erase( playerHand_.begin() + it );
-		}*/
 	}
+}
+
+void Player::clearDiscards(){
+	playerDiscards_.clear();
 }
 
 // reset all card info for the next round
 int Player::calcPlayerPoints() {
-   	int tempPoints = 0;
-   	for (vector<Card*>::iterator it = playerDiscards_.begin() ; it != playerDiscards_.end(); ++it) {
-   		tempPoints += (*it)->getRankInt();
-   	} 
-
-   	// addPlayerPoints(tempPoints);
-   	//playerDiscards_.clear();
-   	return (tempPoints);
+	int tempPoints = 0;
+	for (vector<Card*>::iterator it = playerDiscards_.begin() ; it != playerDiscards_.end(); ++it) {
+		tempPoints += (*it)->getRankInt()+1;
+	}
+	return (tempPoints);
 } 

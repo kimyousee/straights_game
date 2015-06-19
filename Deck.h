@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Card.h"
 
-
 class Deck {
 public:
 	Deck(int);
@@ -13,8 +12,9 @@ public:
 	void dealCards(std::vector<Player*>);
 	void shuffle();
 	void printDeck();
+
 private:
-	std::vector<Card*> cards_; // current deck
+	std::vector<Card*> cards_;
 	int seed_;
 };
 

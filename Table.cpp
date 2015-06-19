@@ -27,7 +27,7 @@ Table::~Table(){
 	delete playedCards_;
 }
 
-// the player number; from 1 to 4
+// Returns the player number; from 1 to 4
 int Table::currentPlayerNumber() const {
 	return currentPlayer_->getPlayerNumber();
 }
@@ -77,13 +77,11 @@ void Table::changeCurPlayerOnTable(int newCurrent){
 
 // the cpu passed in should have been constructed with the player passed in
 void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
-	cout << "T:replacePlayerWithCPU: " << cpu->getPlayerType() << endl;
 	int index = currentPlayerNumber()-1;
 	Player* temp = listOfPlayers_[index];
 	listOfPlayers_[index] = cpu;
 	delete temp;
 	currentPlayer_ = cpu;
-	cout << "T:replacePlayerWithCPU: " << listOfPlayers_[index]->getPlayerType() << endl;
 }
 
 void Table::reset(){

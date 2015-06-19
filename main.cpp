@@ -9,6 +9,8 @@ int main( int argc, char * argv[] ) {
 	Model model;
 	Controller controller(&model);
 	Command cmd;
+
+	// For reading in an integer for Deck's shuffle
 	int seed = 0;
 	if (argc == 2){
 		seed = atoi(argv[1]);
@@ -16,6 +18,7 @@ int main( int argc, char * argv[] ) {
 
 	model.initializeTable();
 	model.start(seed);
+
 	while (cmd.type != QUIT){
 		controller.cpuTurn();
 		controller.outputIfHumanPlayer();
@@ -23,7 +26,7 @@ int main( int argc, char * argv[] ) {
 		cout << ">";
 		cin >> cmd;
 		
-		if (cmd == BAD_COMMAND ) break; // ?
+		if (cmd == BAD_COMMAND ) break;
 		if (cmd.type == PLAY) {
 			controller.play(cmd.card);
 		} else if (cmd.type == DISCARD){
@@ -33,7 +36,6 @@ int main( int argc, char * argv[] ) {
 		} else if (cmd.type == RAGEQUIT){
 			controller.ragequit();
 		}
-		// cout << endl;
 	}
 	return 0;
 }

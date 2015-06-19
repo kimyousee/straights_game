@@ -12,6 +12,8 @@ namespace {
 	} 
 }
 
+// Initializes the table with players
+// requires 'h's and 'c's to indicate the type of each player
 void Model::initializeTable() {
 	string playerTypeStr;
 	for (int i = 0; i < 4; i++) {
@@ -129,16 +131,15 @@ void Model::deck(){
 	outputHuman_ = false;
 }
 
+// This is already handled in controller, which will stop taking commands
 void Model::quit(){}
 
 // When a human player leaves, we must replace it by a ComputerPlayer
 void Model::ragequit(){
-	cout << endl;
 	cout << "Player " << game_->currentPlayer()->getPlayerNumber() << " ragequits. A computer will now take over." << endl; 
 	Player* curPlayer = game_->currentPlayer();
 	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
 	game_->replacePlayerWithCPU(cpu);
-	cout << "aiyaa why? " << endl;
 }
 
 void Model::checkEndGame_(){
@@ -149,7 +150,6 @@ void Model::checkEndGame_(){
 		while (nextHand.size() == 0){
 			passes_ += 1;
 			if (passes_ == 4){
-				cout << "passed 4 players"<<endl;
 				outputEndGame_();
 				break;
 			}
@@ -161,12 +161,12 @@ void Model::checkEndGame_(){
 	}
 }
 
+// Calls play or discard if the current player is a computer
 void Model::cpuTurn(){
 	Player* curPlayer = game_->currentPlayer();
 	// Check if current player is human
 	if (curPlayer->getPlayerType() == "h") { return; }
 
-	// while(!game_->getReset() && game_->currentPlayer()->getPlayerType() == "c"){
 	while(!(game_->end()) && game_->currentPlayer()->getPlayerType() == "c"){
 		cpuPlayOrDiscard_();
 	}
@@ -176,15 +176,7 @@ void Model::cpuPlayOrDiscard_(){
 	Player* curPlayer = game_->currentPlayer();
 	vector<Card*> hand = curPlayer->getPlayerHand();
 	vector<vector<int> >& played = *(game_->getPlayedCards());
-	
-	// ////
-	// for (int i = 0; i < 4; i++){
-	// 	for (int j = 0; j < 13; j++){
-	// 		cout << played[i][j] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
-	// ////
+
 	bool playedCard = false;
 	for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
 		int suitTemp = (*it)->getSuitInt();
@@ -204,49 +196,41 @@ void Model::cpuPlayOrDiscard_(){
 	}
 }
 
+// Outputs the table's cards, current player(h)'s hand, and legal cards to play
 void Model::outputIfHumanPlayer(){
 	if (!outputHuman_) return;
 	if (game_->currentPlayer()->getPlayerType() == "h"){
 		vector<vector<int> >& played = *(game_->getPlayedCards());
-		
-		//// For debugging the playedCards_ vector
-		//for (int i = 0; i < 4; i++){
-		//	for (int j = 0; j < 13; j++){
-		//		cout << played[i][j] << " ";
-		//	}
-		//	cout << endl;
-		//}
-
 
 		cout << "Cards on the table:" << endl;
-		
+
 		for(int i = 0; i<4; i++){
-			if (i == 0)      cout << "Clubs: ";
-			else if (i == 1) cout << "Diamonds: ";
-			else if (i == 2) cout << "Hearts: ";
-			else             cout << "Spades: ";
+			if (i == 0)      cout << "Clubs:";
+			else if (i == 1) cout << "Diamonds:";
+			else if (i == 2) cout << "Hearts:";
+			else             cout << "Spades:";
 			for(int j = 0; j<13; j++){
 				if (played[i][j] == 1) { // when card is on the table
+					cout << " ";
 					printIntsToRank(j);
-					if (j != 12) cout << " ";
 				}
 			}
 			cout << endl;
 		}
 
-		cout << "Your hand: ";
+		cout << "Your hand:";
 		vector<Card*> hand = game_->currentPlayer()->getPlayerHand();
 		for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
+			cout << " ";
 			cout << (**it);
-			if (it != hand.end()-1) cout << " " ;
 		}
 		cout << endl;
 		
-		cout << "Legal plays: ";
+		cout << "Legal plays:";
 		for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
 			if (legalCardLookup_(**it)){
+				cout << " ";
 				cout << (**it);
-				if (it != hand.end()-1) cout << " " ;
 			}
 		}
 		cout << endl;
@@ -259,13 +243,14 @@ void Model::outputEndGame_(){
 	bool end = false;
 	for(int i = 0; i < 4; i++){
 		Player* p = players[i];
-		cout << "Player " << i+1 << "\'s discards: ";
+		cout << "Player " << i+1 << "\'s discards:";
 		vector<Card*> discarded = p->getDiscardedHand();
 		for(vector<Card*>::iterator it = discarded.begin(); it != discarded.end(); it++){
+			cout << " ";
 			cout << (**it);
-			if (it != discarded.end() - 1) cout << " ";
 		}
 		cout << endl;
+
 		cout << "Player " << i+1 << "\'s score: ";
 		int oldPoints = p->getPlayerPoints();
 		int newPoints = p->calcPlayerPoints();
@@ -276,11 +261,11 @@ void Model::outputEndGame_(){
 		if (p->getPlayerPoints() >= 80) end = true;
 
 		cout << oldPoints << " + " << newPoints << " = " << p->getPlayerPoints() << endl;
+		p->clearDiscards();
 	}
 	// Output winners if points are greater than 80
 	// else start a new game
 	if (end){
-		cout << "Ending a game" << endl;
 		int lowest = points[0];
 		int lowestPlayer[4] = {1,0,0,0};
 		for (int i = 1; i < 4; i++){
@@ -301,7 +286,6 @@ void Model::outputEndGame_(){
 		exit(0);
 	} else {
 		game_->setReset(true);
-		cout << "Starting a new game" << endl;
 		start(seed_);
 	}
 }
