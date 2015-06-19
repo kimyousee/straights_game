@@ -103,11 +103,18 @@ void Model::discard(Card card){
 		}
 	}
 
+	// Get card from player's hand
+	Card* playerCard;
+
+	for (vector<Card*>::iterator it = hand.begin(); it!=hand.end(); it++){
+		if( (**it) == card )  playerCard = *it;
+	}
+
 	// When card is not legal and is not on the board already
 	if (played[suit][rank] == 0) {
 		Player* curPlayer = game_->currentPlayer();
-		curPlayer->incrementDiscardedHand(&card);
-		curPlayer->decrementPlayerHand(&card);
+		curPlayer->incrementDiscardedHand(playerCard);
+		curPlayer->decrementPlayerHand(playerCard);
 		cout << "Player " << game_->currentPlayerNumber() << " discards " << card << "." << endl;
 		if (game_->currentPlayer()->getPlayerType() == "h") outputHuman_ = true;
 

@@ -1,4 +1,3 @@
-// Hi
 #include "Player.h"
 #include <iostream>
 #include <ostream>
