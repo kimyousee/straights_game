@@ -12,7 +12,7 @@
 // Model controls the game and holds all logic
 class Model {
 public:
-	Model(){};
+	Model();
 	~Model(){delete game_;}
 
 	// Commands called from controller
@@ -39,9 +39,8 @@ private:
 	Table* game_;
 	Deck* deck_;
 
-	int passes_ = 0; // for how many players are done
-	// This is used to skip outputting if it is false
-	bool outputHuman_ = true;
+	int passes_; // for how many players are done playing this round
+	bool outputHuman_; // This is used to skip outputting if it is false
 	int seed_; // For Deck's shuffle
 };
 

@@ -48,8 +48,8 @@ private:
 	//   2 = legal move
 	std::vector<std::vector<int> >* playedCards_;
 
-	bool reset_ = false; // set this to true when we start a new game
-	bool end_ = false;   // set this to true to end the game
+	bool reset_; // set this to true when we start a new game
+	bool end_;   // set this to true to end the game
 };
 
 #endif

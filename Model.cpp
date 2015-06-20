@@ -12,6 +12,11 @@ namespace {
 	} 
 }
 
+Model::Model(){
+	passes_ = 0;
+	outputHuman_ = true;
+}
+
 // Initializes the table with players
 // requires 'h's and 'c's to indicate the type of each player
 void Model::initializeTable() {

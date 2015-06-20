@@ -5,6 +5,8 @@
 
 using namespace std;
 Table::Table(std::vector<std::string> playerTypes) {
+	reset_ = false;
+	end_ = false;
 	for (int i = 0; i < 4; i++) {
 		if (playerTypes[i] == "h") {
 			listOfPlayers_.push_back(new HumanPlayer(i+1));
