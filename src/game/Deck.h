@@ -4,6 +4,7 @@
 #include <vector>
 #include "Player.h"
 #include "Card.h"
+#include <gdkmm/pixbuf.h>
 
 class Deck {
 public:
@@ -13,8 +14,11 @@ public:
 	void shuffle();
 	void printDeck();
 
+	Glib::RefPtr<Gdk::Pixbuf> getCardImage(Suit s, Face f)
+
 private:
-	std::vector<Card*> cards_;
+	// std::vector<Card*> cards_;
+	std::vector< Glib::RefPtr<Gdk::Pixbuf> > cards_;
 	int seed_;
 };
 
