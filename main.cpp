@@ -1,19 +1,21 @@
+
+#include <gtkmm/main.h>
 #include "Model.h"
 #include "Controller.h"
+#include "View.h"
 #include "Command.h"
 #include <iostream>
 #include <cstdlib>
-#include <gtkmm/main.h>
 
 using namespace std;
 
 int main( int argc, char * argv[] ) {
 	// Initialize gtkmm with the command line arguments, as appropriate.
-	// Gtk::Main  kit( argc, argv );
+	Gtk::Main  kit( argc, argv );
 
-	// Model model;
-	// Controller controller(&model);
-	// View view(&controller, &model);
+	Model model;
+	Controller controller(&model);
+	View view(&controller, &model);
 	// Gtk::Main::run(view);
 	// Command cmd;
 

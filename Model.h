@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include "Subject.h"
 #include "Player.h"
 #include "Card.h"
 #include "Deck.h"
 #include "Table.h"
 
 // Model controls the game and holds all logic
-class Model {
+class Model : public Subject {
 public:
 	Model();
 	~Model(){delete game_;}

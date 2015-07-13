@@ -5,7 +5,9 @@
 #define MVC_VIEW_H
 
 #include <gtkmm.h>
+#include "DeckGUI.h"
 #include "Observer.h"
+#include "Subject.h"
 #include "Controller.h"
 #include "Model.h"
 
@@ -15,6 +17,7 @@ class Model;
 class View : public Gtk::Window, public Observer {
 public:
 	View (Controller*, Model*);
+	~View();
 	virtual void update();
 
 private:
@@ -24,10 +27,13 @@ private:
 	// Strategy Pattern member (plus signal handlers)
 	Controller *controller_;
 
+	DeckGUI deck_;
+
 	// Gtk::Frame
 	// Gtk::HBox butBox; // stack buttons horizontally
 	// Gtk::Button  
 	// Gtk::Button
+	Gtk::Image card;
 
 };
 
