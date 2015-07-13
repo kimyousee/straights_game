@@ -30,18 +30,25 @@ Glib::RefPtr<Gdk::Pixbuf> createPixbuf(const string &name){
 }
 
 DeckGUI::DeckGUI(){
+	// Images can only be loaded once the main window has been initialized, so cannot be done as a static
+	// constant array. Instead, use the STL transform algorithm to apply the method createPixbuf to every
+	// element in the array of image names, starting with first and ending with the last. New elements are
+	// added to the back of deck.
 	transform( &image_names[0], &image_names[G_N_ELEMENTS(image_names)], 
 			   std::back_inserter(deck_), &createPixbuf );
 }
 
+// Destructor
 DeckGUI::~DeckGUI() {
 }
 
+// Returns the image for the specified card.
 Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getCardImage(Suit s, Rank r){
 	int index = ((int) s)*4 + ((int) r);
 	return deck_[index];
 }
 
+// Returns the image to use for the placeholder.
 Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getNullCardImage() {
 	int size = deck_.size();
 	return deck_[size-1];

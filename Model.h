@@ -11,6 +11,7 @@
 #include "Table.h"
 
 // Model controls the game and holds all logic
+// Is a subject for the Observer pattern; it will notify all Observers
 class Model : public Subject {
 public:
 	Model();
@@ -20,7 +21,7 @@ public:
 	void start(int);
 	void play(Card card);
 	void discard(Card card);
-	void deck();
+	// void deck();
 	void quit();
 	void ragequit();
 

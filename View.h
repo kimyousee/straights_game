@@ -35,6 +35,12 @@ private:
 	// Gtk::Button
 	Gtk::Image card;
 
+	// Signal handlers
+	// select card
+	// Start new game
+	// Quit
+	// Ragequit
+
 };
 
 

@@ -9,7 +9,7 @@ public:
   Controller(Model*);
   void play(Card);
   void discard(Card);
-  void deck();
+  // void deck();
   void quit();
   void ragequit();
   void outputIfHumanPlayer();
