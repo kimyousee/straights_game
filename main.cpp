@@ -15,8 +15,13 @@ int main( int argc, char * argv[] ) {
 
 	Model model;
 	Controller controller(&model);
+	cout << "controller" << endl;
+
 	View view(&controller, &model);
-	// Gtk::Main::run(view);
+	cout << "view" << endl;
+
+	Gtk::Main::run(view);
+	cout << "After running" << endl;
 	// Command cmd;
 
 	// // For reading in an integer for Deck's shuffle

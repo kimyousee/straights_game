@@ -9,13 +9,14 @@
 #include "Card.h"
 #include "Deck.h"
 #include "Table.h"
+#include <iostream>
 
 // Model controls the game and holds all logic
 // Is a subject for the Observer pattern; it will notify all Observers
 class Model : public Subject {
 public:
 	Model();
-	~Model(){delete game_;}
+	~Model(){std::cout << "before" << std::endl; delete game_; std::cout << "after :)" << std::endl;}
 
 	// Commands called from controller
 	void start(int);

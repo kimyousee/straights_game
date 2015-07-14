@@ -5,6 +5,7 @@
 #define MVC_VIEW_H
 
 #include <gtkmm.h>
+#include <vector>
 #include "DeckGUI.h"
 #include "Observer.h"
 #include "Subject.h"
@@ -29,12 +30,18 @@ private:
 
 	DeckGUI deck_;
 
+	Gtk::VBox vboxframe_;
+	Gtk::HBox row_;
+	Gtk::Frame frame_;
 	// Gtk::Frame
 	// Gtk::HBox butBox; // stack buttons horizontally
 	// Gtk::Button  
 	// Gtk::Button
-	Gtk::Image card;
-
+	std::vector<Gtk::Image*> clubs_;
+	std::vector<Gtk::Image*> diamonds_;
+	std::vector<Gtk::Image*> spades_;
+	std::vector<Gtk::Image*> hearts_;
+	std::vector<std::vector<Gtk::Image*> > table_;
 	// Signal handlers
 	// select card
 	// Start new game
