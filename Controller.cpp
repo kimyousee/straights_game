@@ -30,3 +30,7 @@ void Controller::outputIfHumanPlayer(){
 void Controller::cpuTurn(){
 	model_->cpuTurn();
 }
+
+void Controller::startButtonClicked(){
+
+}

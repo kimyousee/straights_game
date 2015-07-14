@@ -14,6 +14,7 @@ public:
   void ragequit();
   void outputIfHumanPlayer();
   void cpuTurn();
+  void startButtonClicked();
 private:
   Model *model_;
 };

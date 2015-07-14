@@ -9,6 +9,12 @@ using namespace std;
 // with 10 pixels between widgets
 View::View(Controller *c, Model *m) : model_(m), controller_(c), vboxframe_(true,10), deck_() {
 
+	// Make the start button
+	start_button_.signal_clicked().connect(sigc::mem_fun(*this,
+		&View::on_start_game_clicked_));
+	start_button_.add_label("button");
+	add(start_button_);
+
 	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck_.getNullCardImage();
 
 	// Sets some properties of the window.
@@ -53,6 +59,8 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), vboxframe_(true
 		vboxframe_.add(row_);
 	}
 
+
+
 	// Add panels to the window
 	// add(panels);
 
@@ -81,6 +89,10 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), vboxframe_(true
 
 View::~View() {
 	std::cout << "view destructor" << std::endl;
+}
+
+void View::on_start_game_clicked_(){
+	controller_->startButtonClicked();
 }
 
 

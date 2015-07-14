@@ -22,6 +22,7 @@ public:
 	virtual void update();
 
 private:
+	void on_start_game_clicked_();
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
 	
@@ -42,6 +43,9 @@ private:
 	std::vector<Gtk::Image*> spades_;
 	std::vector<Gtk::Image*> hearts_;
 	std::vector<std::vector<Gtk::Image*> > table_;
+
+	Gtk::Button start_button_;
+
 	// Signal handlers
 	// select card
 	// Start new game
