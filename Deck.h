@@ -13,8 +13,10 @@ public:
 	void shuffle();
 	void printDeck();
 
+
 private:
-	std::vector<Card*> cards_;
+	// std::vector<Card*> cards_;
+	std::vector< Card* > cards_;
 	int seed_;
 };
 

@@ -28,6 +28,7 @@ void Model::initializeTable() {
 		playerTypes_.push_back(playerTypeStr);
 	}
 	game_ = new Table(playerTypes_);
+	notify();
 }
 
 // Start the game
@@ -43,7 +44,7 @@ void Model::start(int seed){
 	int start = game_->findStartingPlayer();
 
 	cout << "A new round begins. It's player " << start << "'s turn to play." << endl;
-
+	notify();
 }
 
 // Play a card if it is legal to do so
@@ -131,10 +132,10 @@ void Model::discard(Card card){
 }
 
 // Prints out the deck
-void Model::deck(){
-	deck_->printDeck();
-	outputHuman_ = false;
-}
+// void Model::deck(){
+// 	deck_->printDeck();
+// 	outputHuman_ = false;
+// }
 
 // This is already handled in controller, which will stop taking commands
 void Model::quit(){}
@@ -145,6 +146,7 @@ void Model::ragequit(){
 	Player* curPlayer = game_->currentPlayer();
 	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
 	game_->replacePlayerWithCPU(cpu);
+	notify();
 }
 
 void Model::checkEndGame_(){
@@ -199,6 +201,7 @@ void Model::cpuPlayOrDiscard_(){
 	if (!playedCard){
 		discard(*(hand[0]));
 	}
+	notify();
 }
 
 // Outputs the table's cards, current player(h)'s hand, and legal cards to play
@@ -288,9 +291,11 @@ void Model::outputEndGame_(){
 			}
 		}
 		game_->setEnd(true); // end the game
+		notify();
 		exit(0);
 	} else {
 		game_->setReset(true);
+		notify();
 		start(seed_);
 	}
 }
@@ -314,5 +319,6 @@ void Model::incrCurrentPlayer_(){
 	} else if (playerNum == 4){
 		game_->changeCurPlayerOnTable(0);
 	}
+	notify(); ///
 }
 
