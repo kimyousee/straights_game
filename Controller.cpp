@@ -11,9 +11,9 @@ void Controller::discard(Card card){
 	model_->discard(card);
 }
 
-void Controller::deck(){
-	model_->deck();
-}
+// void Controller::deck(){
+// 	model_->deck();
+// }
 
 void Controller::quit(){
 	model_->quit();

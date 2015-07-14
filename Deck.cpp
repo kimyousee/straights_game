@@ -6,6 +6,7 @@ using namespace std;
 
 int CARD_COUNT = 52;
 
+
 // Deck constructor
 Deck::Deck(int seed) {
 	int suit = CLUB;
@@ -69,5 +70,3 @@ void Deck::shuffle(){
 		cards_[k] = c;
 	}
 }
-
-
