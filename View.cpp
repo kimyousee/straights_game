@@ -3,14 +3,56 @@
 #include <iostream>
 #include "DeckGUI.h"
 
+using namespace std;
+
 // Creates buttons with labels. Sets butBox elements to have the same size, 
 // with 10 pixels between widgets
-View::View(Controller *c, Model *m) : model_(m), controller_(c), card(deck_.getNullCardImage()) {
+View::View(Controller *c, Model *m) : model_(m), controller_(c), vboxframe_(true,10), deck_() {
+
+	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck_.getNullCardImage();
 
 	// Sets some properties of the window.
-	set_title( "CS247 MVC example" );
+	set_title( "Straights UI" );
 	set_border_width( 10 );
+
+	// Set the look of the frame.
+	frame_.set_label( "Cards on the table:" );
+	frame_.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
+	frame_.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
 	
+
+	for (int i = 0; i < 13; i++) {
+		clubs_.push_back( new Gtk::Image( nullCardPixbuf ) );
+		diamonds_.push_back( new Gtk::Image( nullCardPixbuf ) );
+		spades_.push_back( new Gtk::Image( nullCardPixbuf ) );
+		hearts_.push_back( new Gtk::Image( nullCardPixbuf ) );
+	}
+
+	table_.push_back(clubs_);
+	table_.push_back(diamonds_);
+	table_.push_back(spades_);
+	table_.push_back(hearts_);
+
+
+	// Add the frame to the window. Windows can only hold one widget, same for frames.
+	add( frame_ );
+
+	// Add the horizontal box for laying out the images to the frame.
+	frame_.add( vboxframe_ );
+
+
+	//cout << (table_[0][0]) << endl;
+
+
+	// Initialize 4 empty cards and place them in the box.
+	for(int j = 0; j < 4; j++){
+		for (int i = 0; i < 13; i++ ) {
+			//table_[j][i] = new Gtk::Image( nullCardPixbuf );
+			row_.add( *((table_)[j][i]) );
+		}
+		vboxframe_.add(row_);
+	}
+
 	// Add panels to the window
 	// add(panels);
 
@@ -37,7 +79,9 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), card(deck_.getN
 
 } // View::View
 
-View::~View() {}
+View::~View() {
+	std::cout << "view destructor" << std::endl;
+}
 
 
 void View::update() {
