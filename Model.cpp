@@ -19,13 +19,13 @@ Model::Model(){
 
 // Initializes the table with players
 // requires 'h's and 'c's to indicate the type of each player
-void Model::initializeTable() {
-	string playerTypeStr;
+void Model::initializeTable(vector<string> player) {
+	// string playerTypeStr;
 	for (int i = 0; i < 4; i++) {
 		cout << "Is player " << i+1 << " a human(h) or a computer(c)?" << endl;
-		cout << ">";
-		cin >> playerTypeStr;
-		playerTypes_.push_back(playerTypeStr);
+		cout << ">" << player[i] << endl;
+		// cin >> playerTypeStr;
+		playerTypes_.push_back((string)player[i]);
 	}
 	game_ = new Table(playerTypes_);
 	notify();

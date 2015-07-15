@@ -29,6 +29,8 @@ private:
 	// Strategy Pattern member (plus signal handlers)
 	Controller *controller_;
 
+	int seed_;
+
 	DeckGUI deck_;
 
 	Gtk::VBox vboxframe_;

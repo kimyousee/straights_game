@@ -10,6 +10,8 @@
 #include "Deck.h"
 #include "Table.h"
 #include <iostream>
+#include <string>
+#include <vector>
 
 // Model controls the game and holds all logic
 // Is a subject for the Observer pattern; it will notify all Observers
@@ -27,7 +29,7 @@ public:
 	void ragequit();
 
 	// Not commands but called from controller
-	void initializeTable();
+	void initializeTable(std::vector<std::string> player);
 	void outputIfHumanPlayer();
 	void cpuTurn();
 

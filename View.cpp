@@ -1,7 +1,9 @@
 #include "View.h"
 #include <gtkmm.h>
 #include <iostream>
+#include <string>
 #include "DeckGUI.h"
+#include "StartGameDialogBox.h"
 
 using namespace std;
 
@@ -92,6 +94,11 @@ View::~View() {
 }
 
 void View::on_start_game_clicked_(){
+	StartGameDialogBox start(*this, "Initial Settings");
+	vector<string> player = start.getTypes();
+	seed_ = start.getSeed();
+	model_->initializeTable(player);
+	model_->start(seed_);
 	controller_->startButtonClicked();
 }
 
