@@ -43,3 +43,7 @@ void Controller::endButtonClicked(){
 void Controller::cardPlayedClicked( int i ){
 	std::cout << "cardPlayed: " << i << std::endl;
 }
+
+void Controller::rageButtonClicked( int i ){
+	std::cout << "ragequit: " << i << std::endl;
+}
