@@ -1,5 +1,6 @@
 #include "Controller.h"
 #include "Model.h"
+#include <iostream>
 
 Controller::Controller(Model *m) : model_(m) {}
 
@@ -32,5 +33,13 @@ void Controller::cpuTurn(){
 }
 
 void Controller::startButtonClicked(){
+	std::cout << "start" << std::endl;
+}
 
+void Controller::endButtonClicked(){
+	std::cout << "end" << std::endl;
+}
+
+void Controller::cardPlayedClicked( int i ){
+	std::cout << "cardPlayed: " << i << std::endl;
 }

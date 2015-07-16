@@ -15,6 +15,9 @@ public:
   void outputIfHumanPlayer();
   void cpuTurn();
   void startButtonClicked();
+  void endButtonClicked();
+  void cardPlayedClicked( int i );
+
 private:
   Model *model_;
 };
