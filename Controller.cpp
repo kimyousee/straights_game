@@ -1,5 +1,6 @@
 #include "Controller.h"
 #include "Model.h"
+#include "Card.h"
 #include <iostream>
 
 Controller::Controller(Model *m) : model_(m) {}
@@ -41,7 +42,9 @@ void Controller::endButtonClicked(){
 }
 
 void Controller::cardPlayedClicked( int i ){
-	std::cout << "cardPlayed: " << i << std::endl;
+	Card* card = model_->getCardClicked(i);
+	std::cout << "cardPlayed: " << i << card << std::endl;
+	model_->play(*card);
 }
 
 void Controller::rageButtonClicked( int i ){

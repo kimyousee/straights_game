@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-enum State { INIT_GAME, START_GAME };
+enum State { INIT_GAME, START_GAME, CARD_PLAYED};
 
 // Model controls the game and holds all logic
 // Is a subject for the Observer pattern; it will notify all Observers
@@ -37,7 +37,9 @@ public:
 
 	State getState();
 	std::vector<std::vector<int> >* getPlayedCards();
+	Card* getPlayedCard();
 	Player* getCurrentPlayer();
+	std::vector<Player*> getPlayers();
 
 private:
 	void cpuPlayOrDiscard_();

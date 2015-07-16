@@ -25,8 +25,11 @@ private:
 	void on_start_game_clicked_();
 	void on_end_game_clicked_();
 	void on_card_clicked_( int i );
-	void display_current_hand_();
 	void on_rage_clicked_( int i );
+
+	void display_current_hand_();
+	void display_played_card_();
+	void display_players_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;

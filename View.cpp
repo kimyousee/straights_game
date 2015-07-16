@@ -38,11 +38,11 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	gameBox_.pack_start( *menu, Gtk::PACK_SHRINK );
 
 	Gtk::VBox* cardArea = Gtk::manage( new Gtk::VBox() );
-    Gtk::Label *cardLabel = new Gtk::Label( "Cards on the table:" );
-    cardLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-    cardArea->pack_start( *cardLabel);
-    gameBox_.pack_start( *cardArea, Gtk::PACK_SHRINK );
-    cardLabel->show();
+	Gtk::Label *cardLabel = new Gtk::Label( "Cards on the table:" );
+	cardLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
+	cardArea->pack_start( *cardLabel);
+	gameBox_.pack_start( *cardArea, Gtk::PACK_SHRINK );
+	cardLabel->show();
 
 	for (int j = 0; j < 4; j++) {
 		for (int i = 0; i < 13; i++ ) {
@@ -53,47 +53,47 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	}
 	gameBox_.pack_start( table_, Gtk::PACK_SHRINK, true, 0 );
 
-    for (int i = 0; i < 4; i++ ) {
-    	playerScore_.push_back(0);
-    	playerDiscards_.push_back(0);
-    }
+	for (int i = 0; i < 4; i++ ) {
+		playerScore_.push_back(0);
+		playerDiscards_.push_back(0);
+	}
 
-    for ( int i = 0; i < 4; i++ ) {
-        Gtk::VBox* playerArea = Gtk::manage( new Gtk::VBox(true, 0 ) );
+	for ( int i = 0; i < 4; i++ ) {
+		Gtk::VBox* playerArea = Gtk::manage( new Gtk::VBox(true, 0 ) );
 
-        playerRagequit_[i].set_label( "Rage!" );
-        playerRagequit_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_rage_clicked_ ), i) );
-        Gtk::Label *playerLabel = new Gtk::Label( "Player " + to_string (i + 1) );
-        playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-        Gtk::Label *pScoreLabel = new Gtk::Label( to_string (playerScore_[i]) + " points" );
-        Gtk::Label *pDiscardsLabel = new Gtk::Label( to_string (playerDiscards_[i]) + " discards" );
+		playerRagequit_[i].set_label( "Rage!" );
+		playerRagequit_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_rage_clicked_ ), i) );
+		Gtk::Label *playerLabel = new Gtk::Label( "Player " + to_string (i + 1) );
+		playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
+		Gtk::Label *pScoreLabel = new Gtk::Label( to_string (playerScore_[i]) + " points" );
+		Gtk::Label *pDiscardsLabel = new Gtk::Label( to_string (playerDiscards_[i]) + " discards" );
 
-        playerArea->pack_start( *playerLabel );
-        playerArea->pack_start( playerRagequit_[i] );
-        playerArea->pack_start( *pScoreLabel );
-        playerArea->pack_start( *pDiscardsLabel );
+		playerArea->pack_start( *playerLabel );
+		playerArea->pack_start( playerRagequit_[i] );
+		playerArea->pack_start( *pScoreLabel );
+		playerArea->pack_start( *pDiscardsLabel );
 
-        playerFrame_[i].add( *playerArea );
-        player_.pack_start( playerFrame_[i]);
-    }
+		playerFrame_[i].add( *playerArea );
+		player_.pack_start( playerFrame_[i]);
+	}
 
-    gameBox_.pack_start( player_, Gtk::PACK_SHRINK, true, 0 );
+	gameBox_.pack_start( player_, Gtk::PACK_SHRINK, true, 0 );
 
 
-    Gtk::VBox* handArea = Gtk::manage( new Gtk::VBox() );
-    Gtk::Label *handLabel = new Gtk::Label( "Your Hand:" );
-    handLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-    handArea->pack_start( *handLabel);
-    gameBox_.pack_start( *handArea, Gtk::PACK_SHRINK );
-    handLabel->show();
+	Gtk::VBox* handArea = Gtk::manage( new Gtk::VBox() );
+	Gtk::Label *handLabel = new Gtk::Label( "Your Hand:" );
+	handLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
+	handArea->pack_start( *handLabel);
+	gameBox_.pack_start( *handArea, Gtk::PACK_SHRINK );
+	handLabel->show();
 
-    //Display empty 13 cards
-    for (int i = 0; i < 13; i++) { 
-    	Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
-    	currentHand_[i].set_image( *image );
-    	currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
-    	hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
-    }
+	//Display empty 13 cards
+	for (int i = 0; i < 13; i++) { 
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
+		currentHand_[i].set_image( *image );
+		currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
+		hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
+	}
 
 	gameBox_.pack_start( hand_, Gtk::PACK_SHRINK);
 
@@ -105,9 +105,12 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	//update();
 } // View::View
 
+// Destructor
 View::~View() {
 	std::cout << "view destructor" << std::endl;
 }
+
+// Signal Handlers
 
 void View::on_start_game_clicked_(){
 	StartGameDialogBox start(*this, "Initial Settings");
@@ -126,6 +129,12 @@ void View::on_card_clicked_( int i ){
 	controller_->cardPlayedClicked( i );
 }
 
+void View::on_rage_clicked_( int i ){
+	controller_->rageButtonClicked( i );
+}
+
+// Helper functions
+
 void View::display_current_hand_(){
 	Player* p = model_->getCurrentPlayer();
 	vector<Card*> cards = p->getPlayerHand();
@@ -137,18 +146,43 @@ void View::display_current_hand_(){
 	}
 }
 
-void View::on_rage_clicked_( int i ){
-	controller_->rageButtonClicked( i );
+void View::display_played_card_(){
+	Card* card = model_->getPlayedCard();
+	int suit = card->getSuitInt();
+	int rank = card->getRankInt();
+	Glib::RefPtr<Gdk::Pixbuf> cardImage = deck_.getCardImage(card->getSuit(), card->getRank());
+	// Gtk::Image *image = Gtk::manage( new Gtk::Image ( cardImage ) );
+	cards_[suit][rank]->set(cardImage);
 }
+
+void View::display_players_(){
+	vector<Player*> players = model_->getPlayers();
+	for (int i = 0; i < 4; i++){
+		string type = players[i]->getPlayerType(); // "h" or "c"
+		if (type == "c"){
+			// disable rage button
+			// change label to CPU
+		} else {
+			// change label to Human Player
+		}
+	}
+}
+
+// Update for the MVC and Observer pattern
 
 void View::update() {
 	State currentState = model_->getState();
 	switch (currentState){
 		case INIT_GAME:
 			// code to show if players are computers or humans
+			display_players_();
 			break;
 		case START_GAME:
 			display_current_hand_();
+			break;
+		case CARD_PLAYED:
+			//display_current_hand_();
+			display_played_card_();
 			break;
 	}
 }

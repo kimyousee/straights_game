@@ -25,7 +25,7 @@ public:
 	void incrementDiscardedHand(Card* card);
 	void clearDiscards();
 
-	virtual std::string getPlayerType() const = 0; //Computer or Human
+	virtual std::string getPlayerType() const = 0; //Computer "c" or Human "h"
 
 	int calcPlayerPoints(); // reset all card info for the next round
 protected:

@@ -43,10 +43,14 @@ int Table::currentPlayerNumber() const {
 
 vector<vector<int> >* Table::getPlayedCards(){ return playedCards_;}
 
+Card* getPlayedCard(){
+	return playedCard_;
+}
 
 void Table::playCard(Card* card) {
 	int suit = card->getSuitInt();
 	int rank = card->getRankInt();
+	playedCard_ = card;
 	vector<vector<int> >& cards = *getPlayedCards();
 	// Set legal plays for adjacent cards
 	if (rank <= 11 && cards[suit][rank+1] != 1) cards[suit][rank+1] = 2;

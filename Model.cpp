@@ -33,6 +33,10 @@ Player* Model::getCurrentPlayer(){
 	return game_->currentPlayer();
 }
 
+vector<Player*> Model::getPlayers(){
+	return game_->players();
+}
+
 // Initializes the table with players
 // requires 'h's and 'c's to indicate the type of each player
 void Model::initializeTable(vector<string> player) {
@@ -92,6 +96,8 @@ void Model::play(Card card){
 		Player* curPlayer = game_->currentPlayer();
 		curPlayer->decrementPlayerHand(&card);
 
+		state_ = CARD_PLAYED;
+		notify();
 		incrCurrentPlayer_();
 		if (game_->currentPlayer()->getPlayerType() == "h") outputHuman_ = true;		
 
@@ -167,6 +173,16 @@ void Model::ragequit(){
 	notify();
 }
 
+void Model::getPlayedCard(){
+	return game_->getPlayedCard();
+}
+
+Card* Model::getCardClicked(int i){
+	Player* curPlayer = game_->currentPlayer();
+	vector<Card*> hand = curPlayer->getPlayerHand();
+	return hand[i];
+}
+
 void Model::checkEndGame_(){
 	vector<Card*> nextHand = game_->currentPlayer()->getPlayerHand();
 
@@ -219,6 +235,7 @@ void Model::cpuPlayOrDiscard_(){
 	if (!playedCard){
 		discard(*(hand[0]));
 	}
+	state_ = CPU_TURN;
 	notify();
 }
 

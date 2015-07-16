@@ -18,6 +18,7 @@ public:
 	// For modifying the played cards on the table
 	std::vector<std::vector<int> >* getPlayedCards();
 	void playCard(Card*);
+	Card* playedCard();
 
 	// Functions for current player
 	int currentPlayerNumber() const; // accessor, returns the number of the player
@@ -47,6 +48,7 @@ private:
 	//   1 = card is on table
 	//   2 = legal move
 	std::vector<std::vector<int> >* playedCards_;
+	Card* playedCard_; // holds the most recent card played
 
 	bool reset_; // set this to true when we start a new game
 	bool end_;   // set this to true to end the game
