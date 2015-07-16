@@ -55,6 +55,6 @@ clean:
 # Subject.o: Subject.h Subject.cpp
 # Observer.o: Observer.h Observer.cpp
 # Controller.o: Controller.h Controller.cpp
-# View.o: View.h View.cpp
+View.o: DeckGUI.h Observer.h Subject.h Model.h View.h View.cpp
 # main.o: main.cpp
 

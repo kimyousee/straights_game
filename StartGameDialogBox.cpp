@@ -32,15 +32,14 @@ StartGameDialogBox::StartGameDialogBox(Gtk::Window & parentWindow, string title)
 	Gtk::VBox* contentArea = this->get_vbox();
 	contentArea->pack_start( seedLabel, true, false );
 	contentArea->pack_start( seedField, true, false );
+
 	contentArea->pack_start( p1Label, true, false );
-	seedLabel.show();
-	seedField.show();
-	p1Label.show();
-
-
 	addRadioButtons(contentArea, &buttons1_, &group1_, types);
+	contentArea->pack_start( p2Label, true, false );
 	addRadioButtons(contentArea, &buttons2_, &group2_, types);
+	contentArea->pack_start( p3Label, true, false );
 	addRadioButtons(contentArea, &buttons3_, &group3_, types);
+	contentArea->pack_start( p4Label, true, false );
 	addRadioButtons(contentArea, &buttons4_, &group4_, types);
 	
 
@@ -58,14 +57,16 @@ StartGameDialogBox::StartGameDialogBox(Gtk::Window & parentWindow, string title)
 
 	// Wait for a response from the dialog box.
 	int result = run();
+	cout << "before switch" <<endl;
 	switch (result) {
 		case Gtk::RESPONSE_OK:
 			seed_ = atoi((seedField.get_text()).c_str());
+			cout << "in switch: " << seed_ << endl;
 			for (int i = 0; i < 4; i++){
 				if (buttons[i][0]->get_active()){
-					chosenTypes_[i] = "h";
+					chosenTypes_.push_back("h");
 				} else {
-					chosenTypes_[i] = "c";
+					chosenTypes_.push_back("c");
 				}
 			}
 			break;

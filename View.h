@@ -23,6 +23,9 @@ public:
 
 private:
 	void on_start_game_clicked_();
+	void on_end_game_clicked_();
+	void on_card_clicked_( int i );
+
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
 	
@@ -33,21 +36,32 @@ private:
 
 	DeckGUI deck_;
 
-	Gtk::VBox vboxframe_;
-	Gtk::HBox row_;
-	Gtk::Frame frame_;
-	// Gtk::Frame
-	// Gtk::HBox butBox; // stack buttons horizontally
-	// Gtk::Button  
-	// Gtk::Button
-	std::vector<Gtk::Image*> clubs_;
-	std::vector<Gtk::Image*> diamonds_;
-	std::vector<Gtk::Image*> spades_;
-	std::vector<Gtk::Image*> hearts_;
-	std::vector<std::vector<Gtk::Image*> > table_;
+	//Widgets
+	Gtk::VBox table_;
+	Gtk::VBox gameBox_;
 
-	Gtk::Button start_button_;
+	Gtk::HBox suit_[4];
+	Gtk::HBox hand_;
+	Gtk::HBox player_;
 
+	Gtk::Image *cards_[4][13]; // Images to display.
+
+	Gtk::Button startButton_;
+	Gtk::Button endButton_;
+	Gtk::Button currentHand_[13];
+
+	//Gtk::Button playerRagequit[4];
+	//Gtk::Label playerScore[4];
+    //Gtk::Label playerDiscards[4];
+
+	Gtk::Frame gameFrame_;
+
+
+	//std::vector<Gtk::Image*> clubs_;
+	//std::vector<Gtk::Image*> diamonds_;
+	//std::vector<Gtk::Image*> spades_;
+	//std::vector<Gtk::Image*> hearts_;
+	//std::vector<std::vector<Gtk::Image*> > table_;
 	// Signal handlers
 	// select card
 	// Start new game

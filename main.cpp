@@ -21,6 +21,7 @@ int main( int argc, char * argv[] ) {
 	cout << "view" << endl;
 
 	Gtk::Main::run(view);
+
 	cout << "After running" << endl;
 	// Command cmd;
 
