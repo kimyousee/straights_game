@@ -66,6 +66,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 		playerRagequit_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_rage_clicked_ ), i) );
 		stringstream temp_i; temp_i << (i+1);
 		Gtk::Label *playerLabel = new Gtk::Label( "Player " + temp_i.str() );
+		playerRagequit_[i].set_sensitive(false);
 		playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
 		stringstream temp_score; temp_score << playerScore_[i];
 		Gtk::Label *pScoreLabel = new Gtk::Label( temp_score.str() + " points" );
@@ -95,6 +96,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	for (int i = 0; i < 13; i++) { 
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
 		currentHand_[i].set_image( *image );
+		//currentHand_[i].set_sensitive(false);
 		currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
 		hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
 	}
@@ -196,6 +198,15 @@ void View::clear_table_() {
 	for (int i = 0; i < 4; i++ ) {
 		playerScore_[i] = 0;
 		playerDiscards_[i] = 0;
+		playerRagequit_[i].set_sensitive(false);
+	}
+}
+
+void View::set_rage_button_(bool enable) {
+	if (enable) {
+		playerRagequit_[model_->getCurrentPlayer()->getPlayerNumber() - 1].set_sensitive(true);
+	} else {
+		playerRagequit_[model_->getCurrentPlayer()->getPlayerNumber() - 1].set_sensitive(false);
 	}
 }
 
@@ -210,11 +221,13 @@ void View::update() {
 			display_players_();
 			break;
 		case START_GAME:
+			set_rage_button_(true);
 			display_current_hand_();
 			break;
 		case CARD_PLAYED:
+			set_rage_button_(false);
 			display_played_card_();
-			display_current_hand_(); //Display the next player's hand
+			//set_rage_button_(true);
 			break;
 		case CARD_DISCARDED:
 			increment_discards_();
@@ -222,5 +235,12 @@ void View::update() {
 		case END_GAME:
 			clear_table_();
 			break;
+		case RAGE_QUIT:
+			//disable_rage_button_();
+			break;
+		case INCR_PLAYER:
+			set_rage_button_(true);
+			display_current_hand_(); //Display the next player's hand
 	}
+
 }

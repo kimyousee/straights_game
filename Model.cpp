@@ -180,6 +180,7 @@ void Model::ragequit(){
 	Player* curPlayer = game_->currentPlayer();
 	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
 	game_->replacePlayerWithCPU(cpu);
+	state_ = RAGE_QUIT;
 	notify();
 }
 
@@ -364,6 +365,7 @@ void Model::incrCurrentPlayer_(){
 	} else if (playerNum == 4){
 		game_->changeCurPlayerOnTable(0);
 	}
+	state_ = INCR_PLAYER;
 	notify(); ///
 }
 

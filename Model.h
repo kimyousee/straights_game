@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-enum State { INIT_GAME, START_GAME, CARD_PLAYED, CARD_DISCARDED, END_GAME};
+enum State { INIT_GAME, START_GAME, CARD_PLAYED, CARD_DISCARDED, END_GAME, RAGE_QUIT, INCR_PLAYER};
 
 // Model controls the game and holds all logic
 // Is a subject for the Observer pattern; it will notify all Observers

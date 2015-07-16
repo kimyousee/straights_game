@@ -32,6 +32,7 @@ private:
 	void display_players_();
 	void increment_discards_();
 	void clear_table_();
+	void set_rage_button_(bool enable);
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
