@@ -17,6 +17,22 @@ Model::Model(){
 	outputHuman_ = true;
 }
 
+// Table* Model::getTable(){
+// 	return game_;
+// }
+
+State Model::getState(){
+	return state_;
+}
+
+vector<vector<int> >* Model::getPlayedCards(){
+	return game_->getPlayedCards();
+}
+
+Player* Model::getCurrentPlayer(){
+	return game_->currentPlayer();
+}
+
 // Initializes the table with players
 // requires 'h's and 'c's to indicate the type of each player
 void Model::initializeTable(vector<string> player) {
@@ -28,6 +44,7 @@ void Model::initializeTable(vector<string> player) {
 		playerTypes_.push_back((string)player[i]);
 	}
 	game_ = new Table(playerTypes_);
+	state_ = INIT_GAME;
 	notify();
 }
 
@@ -44,6 +61,7 @@ void Model::start(int seed){
 	int start = game_->findStartingPlayer();
 
 	cout << "A new round begins. It's player " << start << "'s turn to play." << endl;
+	state_ = START_GAME;
 	notify();
 }
 
@@ -321,4 +339,9 @@ void Model::incrCurrentPlayer_(){
 	}
 	notify(); ///
 }
+
+void Model::setState_(State state){
+	state_ = state;
+}
+
 

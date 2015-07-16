@@ -1,4 +1,7 @@
 #include "View.h"
+#include "Table.h"
+#include "Player.h"
+#include "Card.h"
 #include <gtkmm.h>
 #include <iostream>
 #include <string>
@@ -25,13 +28,13 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::on_start_game_clicked_) );
 	startButton_.add_label("Start New Game");
 
-    endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::on_end_game_clicked_) );
+	endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::on_end_game_clicked_) );
 	endButton_.add_label("End Current Game");
 
 	menu->pack_start( startButton_);
 	menu->pack_start( endButton_);
 
-    gameBox_.pack_start( *menu, Gtk::PACK_SHRINK );
+	gameBox_.pack_start( *menu, Gtk::PACK_SHRINK );
 
 	// Set the look of the frame.
 	gameFrame_.set_label( "Cards on the table:" );
@@ -48,18 +51,18 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 		}
 		table_.pack_start( suit_[j], Gtk::PACK_SHRINK, true, 0 );
 	}
-    gameBox_.pack_start( table_, Gtk::PACK_SHRINK, true, 0 );
+	gameBox_.pack_start( table_, Gtk::PACK_SHRINK, true, 0 );
 
-    for (int i = 0; i < 13; i++) { 
-    	Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
-    	currentHand_[i].set_image( *image );
-    	currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
-    	hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
-    }
+	for (int i = 0; i < 13; i++) { 
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
+		currentHand_[i].set_image( *image );
+		currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
+		hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
+	}
 
-    gameBox_.pack_start( hand_, Gtk::PACK_SHRINK);
+	gameBox_.pack_start( hand_, Gtk::PACK_SHRINK);
 
-    /*for (int i = 0; i < 13; i++) {
+	/*for (int i = 0; i < 13; i++) {
     	Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
     	currentHand_[i].set_image( *image );
     	currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
@@ -81,15 +84,10 @@ View::~View() {
 
 void View::on_start_game_clicked_(){
 	StartGameDialogBox start(*this, "Initial Settings");
-	std::cout << "1" << std::endl;
 	vector<string> player = start.getTypes();
-	std::cout << "1" << std::endl;
 	seed_ = start.getSeed();
-	std::cout << "2" << std::endl;
 	model_->initializeTable(player);
-	std::cout << "3" << std::endl;
 	model_->start(seed_);
-	std::cout << "4" << std::endl;
 	controller_->startButtonClicked();
 }
 
@@ -101,12 +99,26 @@ void View::on_card_clicked_( int i ){
 	controller_->cardPlayedClicked( i );
 }
 
-void View::update() {
-	// Suit suit = model_->suit();
-	// Rank rank = model_->face();
-	// if ( suit == NOSUIT ) 
-	// 	card.set( deck.getNullImage() );
-	// else
-	// 	card.set( deck.getCardImage(suit, rank) );
+void View::display_current_hand_(){
+	Player* p = model_->getCurrentPlayer();
+	vector<Card*> cards = p->getPlayerHand();
+	for (int i = 0; i < cards.size(); i++){
+		Card* c = cards[i];
+		Glib::RefPtr<Gdk::Pixbuf> cardImage = deck_.getCardImage(c->getSuit(), c->getRank());
 
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( cardImage ) );
+		currentHand_[i].set_image( *image );
+	}
+}
+
+void View::update() {
+	State currentState = model_->getState();
+	switch (currentState){
+		case INIT_GAME:
+			// code to show if players are computers or humans
+			break;
+		case START_GAME:
+			display_current_hand_();
+			break;
+	}
 }
