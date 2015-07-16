@@ -18,7 +18,7 @@ public:
 	// For modifying the played cards on the table
 	std::vector<std::vector<int> >* getPlayedCards();
 	void playCard(Card*);
-	Card* playedCard();
+	Card* getPlayedCard();
 
 	// Functions for current player
 	int currentPlayerNumber() const; // accessor, returns the number of the player

@@ -43,7 +43,7 @@ int Table::currentPlayerNumber() const {
 
 vector<vector<int> >* Table::getPlayedCards(){ return playedCards_;}
 
-Card* getPlayedCard(){
+Card* Table::getPlayedCard(){
 	return playedCard_;
 }
 
