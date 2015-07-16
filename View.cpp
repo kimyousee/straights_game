@@ -9,6 +9,7 @@
 #include <string>
 #include "DeckGUI.h"
 #include "StartGameDialogBox.h"
+#include "DialogBox.h"
 
 using namespace std;
 
@@ -131,7 +132,18 @@ void View::on_end_game_clicked_(){
 }
 
 void View::on_card_clicked_( int i ){
-	controller_->cardPlayedClicked( i );
+	Card* card = model_->getCardClicked(i);
+	int legalMoves = model_->getNumLegalPlays();
+	if (legalMoves == 0){
+		controller_->discard(*card);
+	} else {
+		if (model_->legalCardLookup(*card)){
+			std::cout << "cardPlayed: " << i << card << std::endl;
+			controller_->play(*card);
+		} else {
+			DialogBox start(*this, "Invalid Play", "NEEED AN ERROR MESSAGE HERE!!!");
+		}
+	}
 }
 
 void View::on_rage_clicked_( int i ){

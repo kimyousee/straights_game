@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "Card.h"
 #include <iostream>
+#include "DialogBox.h"
 
 Controller::Controller(Model *m) : model_(m) {}
 
@@ -42,12 +43,6 @@ void Controller::startButtonClicked(std::vector<std::string> playerTypes, int se
 void Controller::endButtonClicked(){
 	std::cout << "end" << std::endl;
 	model_->endGame();
-}
-
-void Controller::cardPlayedClicked( int i ){
-	Card* card = model_->getCardClicked(i);
-	std::cout << "cardPlayed: " << i << card << std::endl;
-	model_->play(*card);
 }
 
 void Controller::rageButtonClicked( int i ){

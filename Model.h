@@ -42,10 +42,12 @@ public:
 	Player* getCurrentPlayer();
 	std::vector<Player*> getPlayers();
 	Card* getCardClicked(int i);
+	int getNumLegalPlays();
+
+	bool legalCardLookup(Card);
 
 private:
 	void cpuPlayOrDiscard_();
-	bool legalCardLookup_(Card);
 	void incrCurrentPlayer_();
 	void checkEndGame_();
 	void outputEndGame_();

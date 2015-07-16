@@ -250,6 +250,17 @@ void Model::cpuPlayOrDiscard_(){
 	notify();
 }
 
+int Model::getNumLegalPlays(){
+	int count = 0;
+	vector<Card*> hand = game_->currentPlayer()->getPlayerHand();
+	for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
+		if (legalCardLookup(**it)){
+			count++;
+		}
+	}
+	return count;
+}
+
 // Outputs the table's cards, current player(h)'s hand, and legal cards to play
 void Model::outputIfHumanPlayer(){
 	if (!outputHuman_) return;
@@ -282,7 +293,7 @@ void Model::outputIfHumanPlayer(){
 		
 		cout << "Legal plays:";
 		for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
-			if (legalCardLookup_(**it)){
+			if (legalCardLookup(**it)){
 				cout << " ";
 				cout << (**it);
 			}
@@ -346,7 +357,7 @@ void Model::outputEndGame_(){
 	}
 }
 
-bool Model::legalCardLookup_(Card card){
+bool Model::legalCardLookup(Card card){
 	int suit = card.getSuitInt();
 	int rank = card.getRankInt();
 	vector<vector<int> >& played = *(game_->getPlayedCards());
