@@ -14,7 +14,7 @@ using namespace std;
 // Creates buttons with labels. Sets butBox elements to have the same size, 
 // with 10 pixels between widgets
 View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10), table_(true,10), gameBox_(false,10) {
-	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck_.getNullCardImage();
+	nullCardPixbuf_ = deck_.getNullCardImage();
 	
 	// Sets some properties of the window.
 	set_title( "Straights UI" );
@@ -46,7 +46,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 	for (int j = 0; j < 4; j++) {
 		for (int i = 0; i < 13; i++ ) {
-			cards_[j][i] = new Gtk::Image( nullCardPixbuf );
+			cards_[j][i] = new Gtk::Image( nullCardPixbuf_ );
 			suit_[j].pack_start( *cards_[j][i] );
 		}
 		table_.pack_start( suit_[j], Gtk::PACK_SHRINK, true, 0 );
@@ -89,7 +89,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 	//Display empty 13 cards
 	for (int i = 0; i < 13; i++) { 
-		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf ) );
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
 		currentHand_[i].set_image( *image );
 		currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
 		hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
@@ -114,11 +114,10 @@ View::~View() {
 
 void View::on_start_game_clicked_(){
 	StartGameDialogBox start(*this, "Initial Settings");
-	vector<string> player = start.getTypes();
+	playerTypes_ = start.getTypes();
 	seed_ = start.getSeed();
-	model_->initializeTable(player);
-	model_->start(seed_);
-	controller_->startButtonClicked();
+	
+	controller_->startButtonClicked(playerTypes_, seed_);
 }
 
 void View::on_end_game_clicked_(){
@@ -136,6 +135,8 @@ void View::on_rage_clicked_( int i ){
 // Helper functions
 
 void View::display_current_hand_(){
+	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf_ = deck_.getNullCardImage();
+
 	Player* p = model_->getCurrentPlayer();
 	vector<Card*> cards = p->getPlayerHand();
 	for (int i = 0; i < cards.size(); i++){
@@ -144,6 +145,11 @@ void View::display_current_hand_(){
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( cardImage ) );
 		currentHand_[i].set_image( *image );
 	}
+	for (int i = cards.size(); i < 13; i++) {
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
+		currentHand_[i].set_image( *image );
+	}
+	model_->outputIfHumanPlayer();
 }
 
 void View::display_played_card_(){
@@ -168,12 +174,29 @@ void View::display_players_(){
 	}
 }
 
+void View::clear_table_() {
+	for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < 13; i++ ) {
+			cards_[j][i]->set( nullCardPixbuf_ );
+		}
+	}
+	for (int i = 0; i < 13; i++) {
+		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
+		currentHand_[i].set_image( *image );
+	}
+	for (int i = 0; i < 4; i++ ) {
+		playerScore_[i] = 0;
+		playerDiscards_[i] = 0;
+	}
+}
+
 // Update for the MVC and Observer pattern
 
 void View::update() {
 	State currentState = model_->getState();
 	switch (currentState){
 		case INIT_GAME:
+			clear_table_();
 			// code to show if players are computers or humans
 			display_players_();
 			break;
@@ -181,8 +204,11 @@ void View::update() {
 			display_current_hand_();
 			break;
 		case CARD_PLAYED:
-			//display_current_hand_();
 			display_played_card_();
+			display_current_hand_(); //Display the next player's hand
+			break;
+		case END_GAME:
+			clear_table_();
 			break;
 	}
 }

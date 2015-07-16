@@ -164,6 +164,12 @@ void Model::discard(Card card){
 // This is already handled in controller, which will stop taking commands
 void Model::quit(){}
 
+// This will end the current game
+void Model::endGame() {
+	state_ = END_GAME;
+	notify();
+}
+
 // When a human player leaves, we must replace it by a ComputerPlayer
 void Model::ragequit(){
 	cout << "Player " << game_->currentPlayer()->getPlayerNumber() << " ragequits. A computer will now take over." << endl; 
@@ -173,7 +179,7 @@ void Model::ragequit(){
 	notify();
 }
 
-void Model::getPlayedCard(){
+Card* Model::getPlayedCard(){
 	return game_->getPlayedCard();
 }
 
@@ -235,7 +241,7 @@ void Model::cpuPlayOrDiscard_(){
 	if (!playedCard){
 		discard(*(hand[0]));
 	}
-	state_ = CPU_TURN;
+	//state_ = CPU_TURN;
 	notify();
 }
 

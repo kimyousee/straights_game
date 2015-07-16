@@ -30,6 +30,7 @@ private:
 	void display_current_hand_();
 	void display_played_card_();
 	void display_players_();
+	void clear_table_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
@@ -61,6 +62,9 @@ private:
 
 	Gtk::Frame playerFrame_[4];
 
+	std::vector<std::string> playerTypes_;
+
+	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf_;
 
 	//std::vector<Gtk::Image*> clubs_;
 	//std::vector<Gtk::Image*> diamonds_;

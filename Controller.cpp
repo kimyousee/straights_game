@@ -33,12 +33,15 @@ void Controller::cpuTurn(){
 	model_->cpuTurn();
 }
 
-void Controller::startButtonClicked(){
+void Controller::startButtonClicked(std::vector<std::string> playerTypes, int seed){
 	std::cout << "start" << std::endl;
+	model_->initializeTable(playerTypes);
+	model_->start(seed);
 }
 
 void Controller::endButtonClicked(){
 	std::cout << "end" << std::endl;
+	model_->endGame();
 }
 
 void Controller::cardPlayedClicked( int i ){
