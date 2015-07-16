@@ -52,4 +52,6 @@ void Controller::cardPlayedClicked( int i ){
 
 void Controller::rageButtonClicked( int i ){
 	std::cout << "ragequit: " << i << std::endl;
+	model_->ragequit();
+	
 }
