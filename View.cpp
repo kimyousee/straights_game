@@ -5,6 +5,7 @@
 #include <vector>
 #include <gtkmm.h>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include "DeckGUI.h"
 #include "StartGameDialogBox.h"
@@ -63,10 +64,13 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 		playerRagequit_[i].set_label( "Rage!" );
 		playerRagequit_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_rage_clicked_ ), i) );
-		Gtk::Label *playerLabel = new Gtk::Label( "Player " + to_string (i + 1) );
+		stringstream temp_i; temp_i << (i+1);
+		Gtk::Label *playerLabel = new Gtk::Label( "Player " + temp_i.str() );
 		playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-		Gtk::Label *pScoreLabel = new Gtk::Label( to_string (playerScore_[i]) + " points" );
-		Gtk::Label *pDiscardsLabel = new Gtk::Label( to_string (playerDiscards_[i]) + " discards" );
+		stringstream temp_score; temp_score << playerScore_[i];
+		Gtk::Label *pScoreLabel = new Gtk::Label( temp_score.str() + " points" );
+		stringstream temp_disc; temp_disc << playerDiscards_[i];
+		Gtk::Label *pDiscardsLabel = new Gtk::Label( temp_disc.str() + " discards" );
 
 		playerArea->pack_start( *playerLabel );
 		playerArea->pack_start( playerRagequit_[i] );
@@ -174,6 +178,11 @@ void View::display_players_(){
 	}
 }
 
+void View::increment_discards_(){
+	int i = model_->getCurrentPlayer()->getPlayerNumber() -1; ///
+	playerDiscards_[i] += 1;
+}
+
 void View::clear_table_() {
 	for (int j = 0; j < 4; j++) {
 		for (int i = 0; i < 13; i++ ) {
@@ -206,6 +215,9 @@ void View::update() {
 		case CARD_PLAYED:
 			display_played_card_();
 			display_current_hand_(); //Display the next player's hand
+			break;
+		case CARD_DISCARDED:
+			increment_discards_();
 			break;
 		case END_GAME:
 			clear_table_();

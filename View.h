@@ -30,6 +30,7 @@ private:
 	void display_current_hand_();
 	void display_played_card_();
 	void display_players_();
+	void increment_discards_();
 	void clear_table_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject

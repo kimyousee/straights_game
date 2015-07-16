@@ -98,6 +98,7 @@ void Model::play(Card card){
 
 		state_ = CARD_PLAYED;
 		notify();
+
 		incrCurrentPlayer_();
 		if (game_->currentPlayer()->getPlayerType() == "h") outputHuman_ = true;		
 
@@ -149,6 +150,9 @@ void Model::discard(Card card){
 		curPlayer->decrementPlayerHand(playerCard);
 		cout << "Player " << game_->currentPlayerNumber() << " discards " << card << "." << endl;
 		if (game_->currentPlayer()->getPlayerType() == "h") outputHuman_ = true;
+
+		state_ = CARD_DISCARDED;
+		notify();
 
 		incrCurrentPlayer_();
 	}
