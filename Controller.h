@@ -17,7 +17,7 @@ public:
   void startButtonClicked();
   void endButtonClicked();
   void cardPlayedClicked( int i );
-
+  void rageButtonClicked( int i );
 private:
   Model *model_;
 };

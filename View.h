@@ -26,6 +26,7 @@ private:
 	void on_end_game_clicked_();
 	void on_card_clicked_( int i );
 	void display_current_hand_();
+	void on_rage_clicked_( int i );
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
@@ -51,11 +52,11 @@ private:
 	Gtk::Button endButton_;
 	Gtk::Button currentHand_[13];
 
-	//Gtk::Button playerRagequit[4];
-	//Gtk::Label playerScore[4];
-    //Gtk::Label playerDiscards[4];
+	Gtk::Button playerRagequit_[4];
+	std::vector<int> playerScore_;
+	std::vector<int> playerDiscards_;
 
-	Gtk::Frame gameFrame_;
+	Gtk::Frame playerFrame_[4];
 
 
 	//std::vector<Gtk::Image*> clubs_;
