@@ -12,7 +12,7 @@ Player::Player(int playerNumber, string playerType) {
 	playerType_ = playerType;
 }
 
-Player::~Player() { cout << "player" << endl; }
+Player::~Player() {}
 
 int Player::getPlayerPoints() {
 	return playerPoints_;

@@ -117,9 +117,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 } // View::View
 
 // Destructor
-View::~View() {
-	std::cout << "view destructor" << std::endl;
-}
+View::~View() {}
 
 // Signal Handlers
 
@@ -189,16 +187,16 @@ void View::display_played_card_(){
 }
 
 void View::display_players_(){
-	vector<Player*> players = model_->getPlayers();
-	for (int i = 0; i < 4; i++){
-		string type = players[i]->getPlayerType(); // "h" or "c"
-		if (type == "c"){
-			// disable rage button
-			// change label to CPU
-		} else {
-			// change label to Human Player
-		}
-	}
+	// vector<Player*> players = model_->getPlayers();
+	// for (int i = 0; i < 4; i++){
+	// 	string type = players[i]->getPlayerType(); // "h" or "c"
+	// 	if (type == "c"){
+	// 		// disable rage button
+	// 		// change label to CPU
+	// 	} else {
+	// 		// change label to Human Player
+	// 	}
+	// }
 }
 
 void View::display_ending_dialog_(){
@@ -299,13 +297,12 @@ void View::update() {
 			//disable_rage_button_();
 			break;
 		case INCR_PLAYER:
-			cout << "player type: " << playerTypes_[get_current_player_number()] << endl;
+			// cout << "player type: " << playerTypes_[get_current_player_number()] << endl;
 			set_rage_button_(true);
 			display_current_hand_(); //Display the next player's hand
 			check_cpu_turn_();
 			break;
 		case GAME_FINISHED:
-			cout << "box is called" << endl;
 			display_score_dialog_();
 			display_ending_dialog_();
 			clear_table_(false);

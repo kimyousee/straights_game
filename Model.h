@@ -21,7 +21,7 @@ enum State { INIT_GAME, START_GAME, END_GAME, GAME_FINISHED, GAME_RESET, SHOW_PO
 class Model : public Subject {
 public:
 	Model();
-	~Model(){std::cout << "before" << std::endl; delete game_; std::cout << "after :)" << std::endl;}
+	~Model(){ delete game_; }
 
 	// Commands called from controller
 	void start(int);
@@ -63,6 +63,7 @@ private:
 	State state_;
 	int winner_;
 	std::string output_scores_;
+	int turnCount_;
 
 	int passes_; // for how many players are done playing this round
 	bool outputHuman_; // This is used to skip outputting if it is false
