@@ -33,6 +33,8 @@ private:
 	void increment_discards_();
 	void clear_table_();
 	void set_rage_button_(bool enable);
+	int get_current_player_number();
+	void check_cpu_turn_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
@@ -59,26 +61,16 @@ private:
 	Gtk::Button currentHand_[13];
 
 	Gtk::Button playerRagequit_[4];
-	std::vector<int> playerScore_;
-	std::vector<int> playerDiscards_;
+	std::vector<int> pScore_;
+	Gtk::Label *playerScore_[4];
+	std::vector<int> pDiscards_;
+	Gtk::Label *playerDiscards_[4];
 
 	Gtk::Frame playerFrame_[4];
 
 	std::vector<std::string> playerTypes_;
 
 	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf_;
-
-	//std::vector<Gtk::Image*> clubs_;
-	//std::vector<Gtk::Image*> diamonds_;
-	//std::vector<Gtk::Image*> spades_;
-	//std::vector<Gtk::Image*> hearts_;
-	//std::vector<std::vector<Gtk::Image*> > table_;
-	// Signal handlers
-	// select card
-	// Start new game
-	// Quit
-	// Ragequit
-
 };
 
 

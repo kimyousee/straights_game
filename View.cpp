@@ -56,8 +56,8 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	gameBox_.pack_start( table_, Gtk::PACK_SHRINK, true, 0 );
 
 	for (int i = 0; i < 4; i++ ) {
-		playerScore_.push_back(0);
-		playerDiscards_.push_back(0);
+		pScore_.push_back(0);
+		pDiscards_.push_back(0);
 	}
 
 	for ( int i = 0; i < 4; i++ ) {
@@ -69,15 +69,15 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 		Gtk::Label *playerLabel = new Gtk::Label( "Player " + temp_i.str() );
 		playerRagequit_[i].set_sensitive(false);
 		playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-		stringstream temp_score; temp_score << playerScore_[i];
-		Gtk::Label *pScoreLabel = new Gtk::Label( temp_score.str() + " points" );
-		stringstream temp_disc; temp_disc << playerDiscards_[i];
-		Gtk::Label *pDiscardsLabel = new Gtk::Label( temp_disc.str() + " discards" );
+		stringstream temp_score; temp_score << pScore_[i];
+		playerScore_[i] = new Gtk::Label( temp_score.str() + " points" );
+		stringstream temp_disc; temp_disc << pDiscards_[i];
+		playerDiscards_[i] = new Gtk::Label( temp_disc.str() + " discards" );
 
 		playerArea->pack_start( *playerLabel );
 		playerArea->pack_start( playerRagequit_[i] );
-		playerArea->pack_start( *pScoreLabel );
-		playerArea->pack_start( *pDiscardsLabel );
+		playerArea->pack_start( *playerScore_[i] );
+		playerArea->pack_start( *playerDiscards_[i] );
 
 		playerFrame_[i].add( *playerArea );
 		player_.pack_start( playerFrame_[i]);
@@ -97,7 +97,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	for (int i = 0; i < 13; i++) { 
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
 		currentHand_[i].set_image( *image );
-		//currentHand_[i].set_sensitive(false);
+		currentHand_[i].set_sensitive(false);
 		currentHand_[i].signal_clicked().connect( sigc::bind(sigc::mem_fun( *this, &View::on_card_clicked_ ), i) );
 		hand_.pack_start( currentHand_[i], Gtk::PACK_SHRINK, true, 0 );
 	}
@@ -135,13 +135,15 @@ void View::on_card_clicked_( int i ){
 	Card* card = model_->getCardClicked(i);
 	int legalMoves = model_->getNumLegalPlays();
 	if (legalMoves == 0){
+		//increment_discards_();
 		controller_->discard(*card);
 	} else {
 		if (model_->legalCardLookup(*card)){
 			std::cout << "cardPlayed: " << i << card << std::endl;
 			controller_->play(*card);
 		} else {
-			DialogBox start(*this, "Invalid Play", "NEEED AN ERROR MESSAGE HERE!!!");
+			stringstream ss; ss << "Invalid Play: '" << *card << "'' is not a legal move." ;
+			DialogBox start(*this, "ERROR", ss.str());
 		}
 	}
 }
@@ -162,10 +164,12 @@ void View::display_current_hand_(){
 		Glib::RefPtr<Gdk::Pixbuf> cardImage = deck_.getCardImage(c->getSuit(), c->getRank());
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( cardImage ) );
 		currentHand_[i].set_image( *image );
+		currentHand_[i].set_sensitive(true);
 	}
 	for (int i = cards.size(); i < 13; i++) {
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
 		currentHand_[i].set_image( *image );
+		currentHand_[i].set_sensitive(false);
 	}
 	model_->outputIfHumanPlayer();
 }
@@ -193,8 +197,11 @@ void View::display_players_(){
 }
 
 void View::increment_discards_(){
-	int i = model_->getCurrentPlayer()->getPlayerNumber() -1; ///
-	playerDiscards_[i] += 1;
+	cout << "discards!! " << endl;
+	int i = get_current_player_number();
+	pDiscards_[i] += 1;
+	stringstream ss; ss << pDiscards_[i];
+	playerDiscards_[i]->set_label(ss.str() + " discards");
 }
 
 void View::clear_table_() {
@@ -206,24 +213,36 @@ void View::clear_table_() {
 	for (int i = 0; i < 13; i++) {
 		Gtk::Image *image = Gtk::manage( new Gtk::Image ( nullCardPixbuf_ ) );
 		currentHand_[i].set_image( *image );
+		currentHand_[i].set_sensitive(false);
 	}
 	for (int i = 0; i < 4; i++ ) {
-		playerScore_[i] = 0;
-		playerDiscards_[i] = 0;
+		pScore_[i] = 0;
+		pDiscards_[i] = 0;
 		playerRagequit_[i].set_sensitive(false);
 	}
 }
 
 void View::set_rage_button_(bool enable) {
-	if (enable) {
-		playerRagequit_[model_->getCurrentPlayer()->getPlayerNumber() - 1].set_sensitive(true);
+	int playerNumber = get_current_player_number();
+	string pType = playerTypes_[playerNumber];
+	if (enable && pType == "h") {
+		playerRagequit_[playerNumber].set_sensitive(true);
 	} else {
-		playerRagequit_[model_->getCurrentPlayer()->getPlayerNumber() - 1].set_sensitive(false);
+		playerRagequit_[playerNumber].set_sensitive(false);
 	}
 }
 
-// Update for the MVC and Observer pattern
+int View::get_current_player_number(){
+	return model_->getCurrentPlayer()->getPlayerNumber() -1;
+}
 
+void View::check_cpu_turn_() {
+	string pType = playerTypes_[get_current_player_number()];
+	if (pType == "c")
+		model_->cpuTurn();
+}
+
+// Update for the MVC and Observer pattern
 void View::update() {
 	State currentState = model_->getState();
 	switch (currentState){
@@ -243,6 +262,7 @@ void View::update() {
 			break;
 		case CARD_DISCARDED:
 			increment_discards_();
+			set_rage_button_(false);
 			break;
 		case END_GAME:
 			clear_table_();
@@ -251,8 +271,11 @@ void View::update() {
 			//disable_rage_button_();
 			break;
 		case INCR_PLAYER:
+			cout << "HERE? " << endl << endl;
+			//cout << "player type: " << playerTypes_[get_current_player_number()];
 			set_rage_button_(true);
 			display_current_hand_(); //Display the next player's hand
+			check_cpu_turn_();
 	}
 
 }

@@ -6,11 +6,11 @@
 using namespace std;
 
 DialogBox::DialogBox(Gtk::Window & parentWindow, string title, string message) : Dialog( title, parentWindow, true, true ) {
-	Gtk::Label messageLabel("message");
+	Gtk::Label messageLabel(message);
 
 	// Obtain the dialog box's vertical alignment box.
 	Gtk::VBox* contentArea = this->get_vbox();
-	contentArea->pack_start( messageLabel, true, false );
+	contentArea->pack_start( messageLabel, Gtk::PACK_SHRINK, true, false );
 
 	// Add a standard "ok" buttons_ with the appropriate responses when clicked.
 	Gtk::Button * okButton = add_button( Gtk::Stock::OK, Gtk::RESPONSE_OK);
