@@ -37,6 +37,7 @@ private:
 	void set_rage_button_(bool enable);
 	int get_current_player_number();
 	void check_cpu_turn_();
+	void update_scores_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;

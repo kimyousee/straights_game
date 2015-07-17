@@ -206,6 +206,15 @@ void View::display_score_dialog_(){
 	DialogBox start(*this, "Results", model_->getRecentScores());
 }
 
+void View::update_scores_(){
+	vector<int> scores = model_->getPlayersScores();
+	for (int i = 0; i < 4; i++){
+		pScore_[i] += scores[i];
+		stringstream ss; ss << pScore_[i];
+		playerScore_[i]->set_label(ss.str() + " points");
+	}
+}
+
 void View::increment_discards_(){
 	cout << "discards!! " << endl;
 	int i = get_current_player_number();
@@ -292,6 +301,7 @@ void View::update() {
 			break;
 		case GAME_RESET:
 			display_score_dialog_();
+			update_scores_();
 			break;
 	}
 

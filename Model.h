@@ -43,6 +43,7 @@ public:
 	Player* getCurrentPlayer();
 	std::vector<Player*> getPlayers();
 	Card* getCardClicked(int i);
+	std::vector<int> getPlayersScores();
 	int getNumLegalPlays();
 	int getWinner();
 	std::string getRecentScores();

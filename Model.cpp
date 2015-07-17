@@ -269,6 +269,15 @@ int Model::getNumLegalPlays(){
 	return count;
 }
 
+vector<int> Model::getPlayersScores(){
+	vector<Player*> players = game_->players();
+	vector<int> points;
+	for (int i = 0; i < 4; i++){
+		points.push_back( players[i]->getPlayerPoints() );
+	}
+	return points;
+}
+
 string Model::getRecentScores(){
 	return output_scores_;
 }
