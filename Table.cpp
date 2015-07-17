@@ -5,6 +5,7 @@
 
 using namespace std;
 Table::Table(std::vector<std::string> playerTypes) {
+	// listOfPlayers_ = NULL;
 	reset_ = false;
 	end_ = false;
 	for (int i = 0; i < 4; i++) {
@@ -22,11 +23,17 @@ Table::Table(std::vector<std::string> playerTypes) {
 }
 
 Table::~Table(){
+	cout << "before Table" << endl;
+	cout << listOfPlayers_.size() << endl;
+	cout << "why" << endl;
 	while (!listOfPlayers_.empty()){
+		cout << "before (while)" << endl;
 		delete listOfPlayers_.back();
+		cout << "after (while)" << endl;
 		listOfPlayers_.pop_back();
 	}
 	delete playedCards_;
+	cout << "after Table" << endl;
 }
 
 // Returns the player number; from 1 to 4
@@ -36,10 +43,14 @@ int Table::currentPlayerNumber() const {
 
 vector<vector<int> >* Table::getPlayedCards(){ return playedCards_;}
 
+Card* Table::getPlayedCard(){
+	return playedCard_;
+}
 
 void Table::playCard(Card* card) {
 	int suit = card->getSuitInt();
 	int rank = card->getRankInt();
+	playedCard_ = card;
 	vector<vector<int> >& cards = *getPlayedCards();
 	// Set legal plays for adjacent cards
 	if (rank <= 11 && cards[suit][rank+1] != 1) cards[suit][rank+1] = 2;
@@ -84,6 +95,7 @@ void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
 	listOfPlayers_[index] = cpu;
 	delete temp;
 	currentPlayer_ = cpu;
+	cout << "PT: " << listOfPlayers_[index]->getPlayerType() << endl;
 }
 
 void Table::reset(){
