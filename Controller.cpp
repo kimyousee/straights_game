@@ -35,19 +35,15 @@ void Controller::cpuTurn(){
 }
 
 void Controller::startButtonClicked(std::vector<std::string> playerTypes, int seed){
-	std::cout << "start" << std::endl;
 	model_->initializeTable(playerTypes);
-	//Glib::usleep(1000000);
 	model_->start(seed);
 }
 
 void Controller::endButtonClicked(){
-	std::cout << "end" << std::endl;
 	model_->endGame();
 }
 
 void Controller::rageButtonClicked( int i ){
-	std::cout << "ragequit: " << i << std::endl;
 	model_->ragequit();
 	
 }

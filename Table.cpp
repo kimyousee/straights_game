@@ -23,17 +23,12 @@ Table::Table(std::vector<std::string> playerTypes) {
 }
 
 Table::~Table(){
-	cout << "before Table" << endl;
 	cout << listOfPlayers_.size() << endl;
-	cout << "why" << endl;
 	while (!listOfPlayers_.empty()){
-		cout << "before (while)" << endl;
 		delete listOfPlayers_.back();
-		cout << "after (while)" << endl;
 		listOfPlayers_.pop_back();
 	}
 	delete playedCards_;
-	cout << "after Table" << endl;
 }
 
 // Returns the player number; from 1 to 4
@@ -95,7 +90,6 @@ void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
 	listOfPlayers_[index] = cpu;
 	delete temp;
 	currentPlayer_ = cpu;
-	cout << "PT: " << listOfPlayers_[index]->getPlayerType() << endl;
 }
 
 void Table::reset(){

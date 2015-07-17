@@ -14,6 +14,7 @@ namespace {
 }
 
 Model::Model(){
+	turnCount_ = 0;
 	passes_ = 0;
 	outputHuman_ = true;
 	winner_ = 0;
@@ -211,12 +212,12 @@ Card* Model::getCardClicked(int i){
 void Model::checkEndGame_(){
 	vector<Card*> nextHand = game_->currentPlayer()->getPlayerHand();
 	passes_ = 0;
-
+	cout << "Turn count:" << turnCount_ << endl;
+	if (turnCount_ % 55 == 0) return; 
 	// If the next player is out of the game, proceed to next player
 	if (nextHand.size() == 0) {
 		while (nextHand.size() == 0 && passes_ <= 4){
 			passes_ += 1;
-			cout << "passes: " << passes_ << endl;
 			if (passes_ == 4){
 				outputEndGame_();
 				passes_ = 0;
@@ -225,7 +226,6 @@ void Model::checkEndGame_(){
 			incrCurrentPlayer_();
 			nextHand = game_->currentPlayer()->getPlayerHand();
 		}
-		passes_ = 0;
 	}
 }
 
@@ -237,8 +237,7 @@ void Model::cpuTurn(){
 
 	if (curPlayer->getPlayerHand().size() == 0) return;
 
-	while(!(game_->end()) && game_->currentPlayer()->getPlayerType() == "c"){
-		cout << "End?: " << game_->end() << endl;
+	while(!(NULL != game_ && game_->end()) && game_->currentPlayer()->getPlayerType() == "c"){
 		cpuPlayOrDiscard_();
 	}
 }
@@ -374,8 +373,8 @@ void Model::outputEndGame_(){
 
 	}
 
-	state_ = SHOW_POINTS;
-	notify();
+	// state_ = SHOW_POINTS;
+	// notify();
 
 	output_scores_ = ss.str();
 	// Output winners if points are greater than 80
@@ -401,19 +400,20 @@ void Model::outputEndGame_(){
 		game_->setEnd(true); // end the game
 
 		state_ = GAME_FINISHED;
-		cout << "State: finished" << endl; 
 		notify();
+		// endGame();
+		return;
 
-		//exit(0);
+		// exit(0);
 	} else {
 		game_->setReset(true);
+		turnCount_ = 0;
 
 		state_ = GAME_RESET;
 		notify();
 
 		start(seed_);
 	}
-	cout << "State: " << state_ << endl;
 }
 
 
@@ -428,6 +428,8 @@ void Model::incrCurrentPlayer_(){
 	} else if (playerNum == 4){
 		game_->changeCurPlayerOnTable(0);
 	}
+	turnCount_ += 1;
+
 	state_ = INCR_PLAYER;
 	notify(); ///
 }

@@ -18,6 +18,7 @@ namespace {
 StartGameDialogBox::StartGameDialogBox(Gtk::Window & parentWindow, string title) : Dialog( title, parentWindow, true, true ) {
 	Gtk::Label seedLabel("Please enter seed: ");
 	Gtk::Entry seedField;
+	seedField.set_text("0");
 
 	Gtk::Label p1Label("Choose player 1 type: ");
 	Gtk::Label p2Label("Choose player 2 type: ");
