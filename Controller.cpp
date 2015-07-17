@@ -27,7 +27,7 @@ void Controller::ragequit(){
 }
 
 void Controller::outputIfHumanPlayer(){
-	model_->outputIfHumanPlayer();
+	//model_->outputIfHumanPlayer();
 }
 
 void Controller::cpuTurn(){

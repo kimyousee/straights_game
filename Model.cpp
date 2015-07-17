@@ -205,6 +205,7 @@ void Model::checkEndGame_(){
 				outputEndGame_();
 				break;
 			}
+			cout << " CHECK END GAME " << endl << endl;
 			incrCurrentPlayer_();
 			nextHand = game_->currentPlayer()->getPlayerHand();
 
