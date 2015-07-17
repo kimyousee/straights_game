@@ -1,6 +1,7 @@
 #include "Model.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ namespace {
 Model::Model(){
 	passes_ = 0;
 	outputHuman_ = true;
+	winner_ = 0;
 }
 
 // Table* Model::getTable(){
@@ -37,9 +39,14 @@ vector<Player*> Model::getPlayers(){
 	return game_->players();
 }
 
+int Model::getWinner(){
+	return winner_;
+}
+
 // Initializes the table with players
 // requires 'h's and 'c's to indicate the type of each player
 void Model::initializeTable(vector<string> player) {
+	winner_ = 0;
 	// string playerTypeStr;
 	for (int i = 0; i < 4; i++) {
 		cout << "Is player " << i+1 << " a human(h) or a computer(c)?" << endl;
@@ -262,6 +269,20 @@ int Model::getNumLegalPlays(){
 	return count;
 }
 
+string Model::getRecentScores(){
+	return output_scores_;
+}
+
+bool Model::legalCardLookup(Card card){
+	int suit = card.getSuitInt();
+	int rank = card.getRankInt();
+	vector<vector<int> >& played = *(game_->getPlayedCards());
+	if (played[suit][rank] == 2) return true;
+	return false;
+}
+
+
+
 // Outputs the table's cards, current player(h)'s hand, and legal cards to play
 void Model::outputIfHumanPlayer(){
 	if (!outputHuman_) return;
@@ -305,19 +326,20 @@ void Model::outputIfHumanPlayer(){
 
 void Model::outputEndGame_(){
 	vector<Player*> players = game_->players();
+	stringstream ss;
 	int points[4];
 	bool end = false;
 	for(int i = 0; i < 4; i++){
 		Player* p = players[i];
-		cout << "Player " << i+1 << "\'s discards:";
+		ss << "Player " << i+1 << "\'s discards:";
 		vector<Card*> discarded = p->getDiscardedHand();
 		for(vector<Card*>::iterator it = discarded.begin(); it != discarded.end(); it++){
-			cout << " ";
-			cout << (**it);
+			ss << " ";
+			ss << (**it);
 		}
-		cout << endl;
+		ss << endl;
 
-		cout << "Player " << i+1 << "\'s score: ";
+		ss << "Player " << i+1 << "\'s score: ";
 		int oldPoints = p->getPlayerPoints();
 		int newPoints = p->calcPlayerPoints();
 
@@ -326,9 +348,16 @@ void Model::outputEndGame_(){
 		points[p->getPlayerNumber()-1] = p->getPlayerPoints();
 		if (p->getPlayerPoints() >= 80) end = true;
 
-		cout << oldPoints << " + " << newPoints << " = " << p->getPlayerPoints() << endl;
+		ss << oldPoints << " + " << newPoints << " = " << p->getPlayerPoints() << endl;
+
 		p->clearDiscards();
+
 	}
+
+	state_ = SHOW_POINTS;
+	notify();
+
+	output_scores_ = ss.str();
 	// Output winners if points are greater than 80
 	// else start a new game
 	if (end){
@@ -346,25 +375,25 @@ void Model::outputEndGame_(){
 		for (int i = 0; i < 4; i++){
 			if (lowestPlayer[i] == 1){
 				cout << "Player " << i+1 << " wins!" << endl;
+				winner_ = i+1;
 			}
 		}
 		game_->setEnd(true); // end the game
+
+		state_ = GAME_FINISHED;
 		notify();
+
 		exit(0);
 	} else {
 		game_->setReset(true);
+
+		state_ = GAME_RESET;
 		notify();
+
 		start(seed_);
 	}
 }
 
-bool Model::legalCardLookup(Card card){
-	int suit = card.getSuitInt();
-	int rank = card.getRankInt();
-	vector<vector<int> >& played = *(game_->getPlayedCards());
-	if (played[suit][rank] == 2) return true;
-	return false;
-}
 
 void Model::incrCurrentPlayer_(){
 	// After playing the card, it's the next player's turn

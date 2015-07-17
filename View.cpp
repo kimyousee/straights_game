@@ -196,6 +196,16 @@ void View::display_players_(){
 	}
 }
 
+void View::display_ending_dialog_(){
+	int winner = model_->getWinner();
+	stringstream ss; ss << "Player " << winner << " has won the game!";
+	DialogBox start(*this, "Congratulations!", ss.str());
+}
+
+void View::display_score_dialog_(){
+	DialogBox start(*this, "Results", model_->getRecentScores());
+}
+
 void View::increment_discards_(){
 	cout << "discards!! " << endl;
 	int i = get_current_player_number();
@@ -271,11 +281,18 @@ void View::update() {
 			//disable_rage_button_();
 			break;
 		case INCR_PLAYER:
-			cout << "HERE? " << endl << endl;
 			//cout << "player type: " << playerTypes_[get_current_player_number()];
 			set_rage_button_(true);
 			display_current_hand_(); //Display the next player's hand
 			check_cpu_turn_();
+			break;
+		case GAME_FINISHED:
+			display_score_dialog_();
+			display_ending_dialog_();
+			break;
+		case GAME_RESET:
+			display_score_dialog_();
+			break;
 	}
 
 }

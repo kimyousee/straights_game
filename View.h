@@ -30,6 +30,8 @@ private:
 	void display_current_hand_();
 	void display_played_card_();
 	void display_players_();
+	void display_ending_dialog_();
+	void display_score_dialog_();
 	void increment_discards_();
 	void clear_table_();
 	void set_rage_button_(bool enable);

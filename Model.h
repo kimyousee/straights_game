@@ -13,7 +13,8 @@
 #include <string>
 #include <vector>
 
-enum State { INIT_GAME, START_GAME, CARD_PLAYED, CARD_DISCARDED, END_GAME, RAGE_QUIT, INCR_PLAYER};
+enum State { INIT_GAME, START_GAME, END_GAME, GAME_FINISHED, GAME_RESET, SHOW_POINTS,
+			 CARD_PLAYED, CARD_DISCARDED, RAGE_QUIT, INCR_PLAYER};
 
 // Model controls the game and holds all logic
 // Is a subject for the Observer pattern; it will notify all Observers
@@ -43,6 +44,8 @@ public:
 	std::vector<Player*> getPlayers();
 	Card* getCardClicked(int i);
 	int getNumLegalPlays();
+	int getWinner();
+	std::string getRecentScores();
 
 	bool legalCardLookup(Card);
 
@@ -57,6 +60,8 @@ private:
 	Table* game_;
 	Deck* deck_;
 	State state_;
+	int winner_;
+	std::string output_scores_;
 
 	int passes_; // for how many players are done playing this round
 	bool outputHuman_; // This is used to skip outputting if it is false
