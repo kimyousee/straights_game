@@ -55,10 +55,12 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 	}
 	gameBox_.pack_start( table_, Gtk::PACK_SHRINK, true, 0 );
 
+	/*
 	for (int i = 0; i < 4; i++ ) {
 		pScore_.push_back(0);
 		pDiscards_.push_back(0);
 	}
+	*/
 
 	for ( int i = 0; i < 4; i++ ) {
 		Gtk::VBox* playerArea = Gtk::manage( new Gtk::VBox(true, 0 ) );
@@ -69,10 +71,12 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 		Gtk::Label *playerLabel = new Gtk::Label( "Player " + temp_i.str() );
 		playerRagequit_[i].set_sensitive(false);
 		playerLabel->set_alignment( Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP );
-		stringstream temp_score; temp_score << pScore_[i];
-		playerScore_[i] = new Gtk::Label( temp_score.str() + " points" );
-		stringstream temp_disc; temp_disc << pDiscards_[i];
-		playerDiscards_[i] = new Gtk::Label( temp_disc.str() + " discards" );
+		//stringstream temp_score; temp_score << pScore_[i];
+		pScore_.push_back(0);
+		playerScore_[i] = new Gtk::Label( "0 points" );
+		//stringstream temp_disc; temp_disc << pDiscards_[i];
+		pDiscards_.push_back(0);
+		playerDiscards_[i] = new Gtk::Label( " 0 discards" );
 
 		playerArea->pack_start( *playerLabel );
 		playerArea->pack_start( playerRagequit_[i] );
@@ -123,7 +127,7 @@ void View::on_start_game_clicked_(){
 	StartGameDialogBox start(*this, "Initial Settings");
 	playerTypes_ = start.getTypes();
 	seed_ = start.getSeed();
-	
+
 	controller_->startButtonClicked(playerTypes_, seed_);
 }
 
@@ -139,7 +143,7 @@ void View::on_card_clicked_( int i ){
 		controller_->discard(*card);
 	} else {
 		if (model_->legalCardLookup(*card)){
-			std::cout << "cardPlayed: " << i << card << std::endl;
+			//std::cout << "cardPlayed: " << i << *card << std::endl;
 			controller_->play(*card);
 		} else {
 			stringstream ss; ss << "Invalid Play: '" << *card << "'' is not a legal move." ;
@@ -149,6 +153,7 @@ void View::on_card_clicked_( int i ){
 }
 
 void View::on_rage_clicked_( int i ){
+	playerTypes_[i] = "c";
 	controller_->rageButtonClicked( i );
 }
 
@@ -216,14 +221,13 @@ void View::update_scores_(){
 }
 
 void View::increment_discards_(){
-	cout << "discards!! " << endl;
 	int i = get_current_player_number();
 	pDiscards_[i] += 1;
 	stringstream ss; ss << pDiscards_[i];
 	playerDiscards_[i]->set_label(ss.str() + " discards");
 }
 
-void View::clear_table_() {
+void View::clear_table_(bool continueGame) {
 	for (int j = 0; j < 4; j++) {
 		for (int i = 0; i < 13; i++ ) {
 			cards_[j][i]->set( nullCardPixbuf_ );
@@ -235,8 +239,12 @@ void View::clear_table_() {
 		currentHand_[i].set_sensitive(false);
 	}
 	for (int i = 0; i < 4; i++ ) {
-		pScore_[i] = 0;
+		if (!continueGame){
+			pScore_[i] = 0;
+			playerScore_[i]->set_label("0 points");
+		}
 		pDiscards_[i] = 0;
+		playerDiscards_[i]->set_label("0 discards");
 		playerRagequit_[i].set_sensitive(false);
 	}
 }
@@ -266,13 +274,14 @@ void View::update() {
 	State currentState = model_->getState();
 	switch (currentState){
 		case INIT_GAME:
-			clear_table_();
+			clear_table_(false);
 			// code to show if players are computers or humans
 			display_players_();
 			break;
 		case START_GAME:
 			set_rage_button_(true);
 			display_current_hand_();
+			check_cpu_turn_();
 			break;
 		case CARD_PLAYED:
 			set_rage_button_(false);
@@ -284,24 +293,27 @@ void View::update() {
 			set_rage_button_(false);
 			break;
 		case END_GAME:
-			clear_table_();
+			clear_table_(false);
 			break;
 		case RAGE_QUIT:
 			//disable_rage_button_();
 			break;
 		case INCR_PLAYER:
-			//cout << "player type: " << playerTypes_[get_current_player_number()];
+			cout << "player type: " << playerTypes_[get_current_player_number()] << endl;
 			set_rage_button_(true);
 			display_current_hand_(); //Display the next player's hand
 			check_cpu_turn_();
 			break;
 		case GAME_FINISHED:
+			cout << "box is called" << endl;
 			display_score_dialog_();
 			display_ending_dialog_();
+			clear_table_(false);
 			break;
 		case GAME_RESET:
 			display_score_dialog_();
 			update_scores_();
+			clear_table_(true);
 			break;
 	}
 

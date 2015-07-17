@@ -37,6 +37,7 @@ void Controller::cpuTurn(){
 void Controller::startButtonClicked(std::vector<std::string> playerTypes, int seed){
 	std::cout << "start" << std::endl;
 	model_->initializeTable(playerTypes);
+	//Glib::usleep(1000000);
 	model_->start(seed);
 }
 

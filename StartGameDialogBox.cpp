@@ -57,11 +57,9 @@ StartGameDialogBox::StartGameDialogBox(Gtk::Window & parentWindow, string title)
 
 	// Wait for a response from the dialog box.
 	int result = run();
-	cout << "before switch" <<endl;
 	switch (result) {
 		case Gtk::RESPONSE_OK:
 			seed_ = atoi((seedField.get_text()).c_str());
-			cout << "in switch: " << seed_ << endl;
 			for (int i = 0; i < 4; i++){
 				if (buttons[i][0]->get_active()){
 					chosenTypes_.push_back("h");

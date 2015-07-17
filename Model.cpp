@@ -52,7 +52,11 @@ void Model::initializeTable(vector<string> player) {
 		cout << "Is player " << i+1 << " a human(h) or a computer(c)?" << endl;
 		cout << ">" << player[i] << endl;
 		// cin >> playerTypeStr;
-		playerTypes_.push_back((string)player[i]);
+		if (playerTypes_.size() == 4){
+			playerTypes_[i] = (string)player[i];
+		} else {
+			playerTypes_.push_back((string)player[i]);
+		}
 	}
 	game_ = new Table(playerTypes_);
 	state_ = INIT_GAME;
@@ -187,8 +191,11 @@ void Model::ragequit(){
 	Player* curPlayer = game_->currentPlayer();
 	ComputerPlayer* cpu = new ComputerPlayer(*curPlayer);
 	game_->replacePlayerWithCPU(cpu);
+
 	state_ = RAGE_QUIT;
 	notify();
+
+	cpuTurn();
 }
 
 Card* Model::getPlayedCard(){
@@ -203,19 +210,20 @@ Card* Model::getCardClicked(int i){
 
 void Model::checkEndGame_(){
 	vector<Card*> nextHand = game_->currentPlayer()->getPlayerHand();
+	passes_ = 0;
 
 	// If the next player is out of the game, proceed to next player
 	if (nextHand.size() == 0) {
-		while (nextHand.size() == 0){
+		while (nextHand.size() == 0 && passes_ <= 4){
 			passes_ += 1;
+			cout << "passes: " << passes_ << endl;
 			if (passes_ == 4){
 				outputEndGame_();
-				break;
+				passes_ = 0;
+				return;
 			}
-			cout << " CHECK END GAME " << endl << endl;
 			incrCurrentPlayer_();
 			nextHand = game_->currentPlayer()->getPlayerHand();
-
 		}
 		passes_ = 0;
 	}
@@ -227,7 +235,10 @@ void Model::cpuTurn(){
 	// Check if current player is human
 	if (curPlayer->getPlayerType() == "h") { return; }
 
+	if (curPlayer->getPlayerHand().size() == 0) return;
+
 	while(!(game_->end()) && game_->currentPlayer()->getPlayerType() == "c"){
+		cout << "End?: " << game_->end() << endl;
 		cpuPlayOrDiscard_();
 	}
 }
@@ -246,7 +257,7 @@ void Model::cpuPlayOrDiscard_(){
 		if (played[suitTemp][rankTemp] == 2){
 			play(**it);
 			playedCard = true;
-			break;
+			return;
 		}
 	}
 
@@ -255,7 +266,7 @@ void Model::cpuPlayOrDiscard_(){
 		discard(*(hand[0]));
 	}
 	//state_ = CPU_TURN;
-	notify();
+	//notify();
 }
 
 int Model::getNumLegalPlays(){
@@ -390,9 +401,10 @@ void Model::outputEndGame_(){
 		game_->setEnd(true); // end the game
 
 		state_ = GAME_FINISHED;
+		cout << "State: finished" << endl; 
 		notify();
 
-		exit(0);
+		//exit(0);
 	} else {
 		game_->setReset(true);
 
@@ -401,6 +413,7 @@ void Model::outputEndGame_(){
 
 		start(seed_);
 	}
+	cout << "State: " << state_ << endl;
 }
 
 
