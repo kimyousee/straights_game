@@ -33,7 +33,7 @@ private:
 	void display_ending_dialog_();
 	void display_score_dialog_();
 	void increment_discards_();
-	void clear_table_();
+	void clear_table_(bool continueGame);
 	void set_rage_button_(bool enable);
 	int get_current_player_number();
 	void check_cpu_turn_();

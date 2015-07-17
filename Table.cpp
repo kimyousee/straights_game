@@ -95,6 +95,7 @@ void Table::replacePlayerWithCPU(ComputerPlayer* cpu){
 	listOfPlayers_[index] = cpu;
 	delete temp;
 	currentPlayer_ = cpu;
+	cout << "PT: " << listOfPlayers_[index]->getPlayerType() << endl;
 }
 
 void Table::reset(){
