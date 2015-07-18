@@ -34,6 +34,18 @@ void Controller::cpuTurn(){
 	model_->cpuTurn();
 }
 
+// Not actually used to start a game.
+// Use this to create an empty game, waiting for the user to 'Start New Game'
+void Controller::initEmptyGame(){
+	std::vector<std::string> types;
+	types.push_back("h");
+	types.push_back("h");
+	types.push_back("h");
+	types.push_back("h");	
+
+	model_->initializeTable(types);
+}
+
 void Controller::startButtonClicked(std::vector<std::string> playerTypes, int seed){
 	model_->initializeTable(playerTypes);
 	model_->start(seed);

@@ -123,6 +123,7 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 	// Register view as observer of model
 	model_->subscribe(this);
+	controller_->initEmptyGame();
 
 	// The final step is to display the buttons (they display themselves)
 	show_all();
@@ -268,6 +269,9 @@ void View::clear_table_(bool continueGame) {
 	playerTurn_->set_label( " " );
 
 	playerLegalCards_->set_label ( " " );
+	if (!continueGame){
+		controller_->initEmptyGame();
+	}
 }
 
 void View::set_rage_button_(bool enable) {
