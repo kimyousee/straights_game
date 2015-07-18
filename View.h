@@ -38,6 +38,7 @@ private:
 	int get_current_player_number();
 	void check_cpu_turn_();
 	void update_scores_();
+	std::string get_legal_plays_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
@@ -68,6 +69,9 @@ private:
 	Gtk::Label *playerScore_[4];
 	std::vector<int> pDiscards_;
 	Gtk::Label *playerDiscards_[4];
+
+	Gtk::Label *playerTurn_;
+	Gtk::Label *playerLegalCards_;
 
 	Gtk::Frame playerFrame_[4];
 
