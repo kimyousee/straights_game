@@ -108,6 +108,19 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 	gameBox_.pack_start( hand_, Gtk::PACK_SHRINK);
 
+	Gtk::VBox* playerLegalCardsArea = Gtk::manage( new Gtk::VBox() );
+	playerLegalCards_ = new Gtk::Label( "" );
+	playerLegalCards_->set_padding ( 10, 10 );
+	playerLegalCardsArea->pack_start( *playerLegalCards_ );
+	gameBox_.pack_start( *playerLegalCardsArea );
+
+	Gtk::VBox* playerTurnArea = Gtk::manage( new Gtk::VBox() );
+	playerTurn_ = new Gtk::Label( "" );
+	// playerTurn_->override_color(Gdk::RGBA("red"));
+	playerTurn_->set_padding ( 15, 15 );
+	playerTurnArea->pack_start( *playerTurn_ );
+	gameBox_.pack_start( *playerTurnArea );
+
 	// Register view as observer of model
 	model_->subscribe(this);
 
@@ -121,7 +134,7 @@ View::~View() {}
 
 // Signal Handlers
 
-void View::on_start_game_clicked_(){
+void View::on_start_game_clicked_() {
 	StartGameDialogBox start(*this, "Initial Settings");
 	playerTypes_ = start.getTypes();
 	seed_ = start.getSeed();
@@ -129,11 +142,11 @@ void View::on_start_game_clicked_(){
 	controller_->startButtonClicked(playerTypes_, seed_);
 }
 
-void View::on_end_game_clicked_(){
+void View::on_end_game_clicked_() {
 	controller_->endButtonClicked();
 }
 
-void View::on_card_clicked_( int i ){
+void View::on_card_clicked_( int i ) {
 	Card* card = model_->getCardClicked(i);
 	int legalMoves = model_->getNumLegalPlays();
 	if (legalMoves == 0){
@@ -150,17 +163,23 @@ void View::on_card_clicked_( int i ){
 	}
 }
 
-void View::on_rage_clicked_( int i ){
+void View::on_rage_clicked_( int i ) {
 	playerTypes_[i] = "c";
 	controller_->rageButtonClicked( i );
 }
 
 // Helper functions
 
-void View::display_current_hand_(){
-	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf_ = deck_.getNullCardImage();
+void View::display_current_hand_() {
+	//const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf_ = deck_.getNullCardImage();
 
 	Player* p = model_->getCurrentPlayer();
+
+	stringstream ss; ss << p->getPlayerNumber();
+	playerTurn_->set_label( "Player " + ss.str() + "'s Turn" );
+
+	playerLegalCards_->set_label ( "Legal Play(s): " + get_legal_plays_() );
+
 	vector<Card*> cards = p->getPlayerHand();
 	for (int i = 0; i < cards.size(); i++){
 		Card* c = cards[i];
@@ -177,7 +196,7 @@ void View::display_current_hand_(){
 	model_->outputIfHumanPlayer();
 }
 
-void View::display_played_card_(){
+void View::display_played_card_() {
 	Card* card = model_->getPlayedCard();
 	int suit = card->getSuitInt();
 	int rank = card->getRankInt();
@@ -186,7 +205,7 @@ void View::display_played_card_(){
 	cards_[suit][rank]->set(cardImage);
 }
 
-void View::display_players_(){
+void View::display_players_() {
 	// vector<Player*> players = model_->getPlayers();
 	// for (int i = 0; i < 4; i++){
 	// 	string type = players[i]->getPlayerType(); // "h" or "c"
@@ -199,17 +218,17 @@ void View::display_players_(){
 	// }
 }
 
-void View::display_ending_dialog_(){
+void View::display_ending_dialog_() {
 	int winner = model_->getWinner();
 	stringstream ss; ss << "Player " << winner << " has won the game!";
 	DialogBox start(*this, "Congratulations!", ss.str());
 }
 
-void View::display_score_dialog_(){
+void View::display_score_dialog_() {
 	DialogBox start(*this, "Results", model_->getRecentScores());
 }
 
-void View::update_scores_(){
+void View::update_scores_() {
 	vector<int> scores = model_->getPlayersScores();
 	for (int i = 0; i < 4; i++){
 		pScore_[i] += scores[i];
@@ -218,7 +237,7 @@ void View::update_scores_(){
 	}
 }
 
-void View::increment_discards_(){
+void View::increment_discards_() {
 	int i = get_current_player_number();
 	pDiscards_[i] += 1;
 	stringstream ss; ss << pDiscards_[i];
@@ -245,6 +264,10 @@ void View::clear_table_(bool continueGame) {
 		playerDiscards_[i]->set_label("0 discards");
 		playerRagequit_[i].set_sensitive(false);
 	}
+
+	playerTurn_->set_label( " " );
+
+	playerLegalCards_->set_label ( " " );
 }
 
 void View::set_rage_button_(bool enable) {
@@ -257,7 +280,7 @@ void View::set_rage_button_(bool enable) {
 	}
 }
 
-int View::get_current_player_number(){
+int View::get_current_player_number() {
 	return model_->getCurrentPlayer()->getPlayerNumber() -1;
 }
 
@@ -265,6 +288,17 @@ void View::check_cpu_turn_() {
 	string pType = playerTypes_[get_current_player_number()];
 	if (pType == "c")
 		model_->cpuTurn();
+}
+
+string View::get_legal_plays_() {
+	stringstream ss;
+	vector<Card*> hand = model_->getCurrentPlayer()->getPlayerHand();
+	for(vector<Card*>::iterator it = hand.begin(); it != hand.end(); it++){
+		if (model_->legalCardLookup(**it)){
+			ss << **it << " ";
+		}
+	}
+	return (ss.str());
 }
 
 // Update for the MVC and Observer pattern
