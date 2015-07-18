@@ -37,6 +37,7 @@ public:
 	void outputIfHumanPlayer();
 	void cpuTurn();
 
+	// Accessors
 	State getState();
 	std::vector<std::vector<int> >* getPlayedCards();
 	Card* getPlayedCard();
@@ -51,6 +52,7 @@ public:
 	bool legalCardLookup(Card);
 
 private:
+	// Helper functions within Model
 	void cpuPlayOrDiscard_();
 	void incrCurrentPlayer_();
 	void checkEndGame_();

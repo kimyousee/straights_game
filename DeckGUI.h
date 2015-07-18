@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Card.h"
 
+// This deck is solely used for the UI, to show cards on the table
 class DeckGUI {
 public:
 	DeckGUI();

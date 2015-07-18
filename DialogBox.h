@@ -5,6 +5,7 @@
 #include <gtkmm/box.h>
 #include <string>
 
+// This is a general pop up which displays a text and an ok button
 class DialogBox : Gtk::Dialog {
 public:
 	DialogBox(Gtk::Window & parentWindow, std::string title, std::string message);

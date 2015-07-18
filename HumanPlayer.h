@@ -6,9 +6,9 @@
 
 class HumanPlayer : public Player {
 public:
-    HumanPlayer(int playerNumber);
-    virtual std::string getPlayerType() const;
-    ~HumanPlayer(){};
+	HumanPlayer(int playerNumber);
+	virtual std::string getPlayerType() const;
+	~HumanPlayer(){};
 };
 
 #endif

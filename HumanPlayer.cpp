@@ -7,5 +7,5 @@ using namespace std;
 HumanPlayer::HumanPlayer(int playerNumber) : Player(playerNumber, "h") {}
 
 string HumanPlayer::getPlayerType() const {
- 	return (playerType_);
+	return (playerType_);
 }

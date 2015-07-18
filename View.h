@@ -22,23 +22,26 @@ public:
 	virtual void update();
 
 private:
+	// Signal Handlers
 	void on_start_game_clicked_();
 	void on_end_game_clicked_();
 	void on_card_clicked_( int i );
 	void on_rage_clicked_( int i );
 
+	// Helper functions for displaying
 	void display_current_hand_();
 	void display_played_card_();
 	void display_players_();
 	void display_ending_dialog_();
 	void display_score_dialog_();
+
 	void increment_discards_();
 	void clear_table_(bool continueGame);
 	void set_rage_button_(bool enable);
-	int get_current_player_number();
 	void check_cpu_turn_();
 	void update_scores_();
 	std::string get_legal_plays_();
+	int get_current_player_number_();
 
 	// Observer Pattern: to access Model accessors without having to downcast subject
 	Model *model_;
@@ -51,6 +54,7 @@ private:
 	DeckGUI deck_;
 
 	//Widgets
+
 	Gtk::VBox table_;
 	Gtk::VBox gameBox_;
 
@@ -58,7 +62,7 @@ private:
 	Gtk::HBox hand_;
 	Gtk::HBox player_;
 
-	Gtk::Image *cards_[4][13]; // Images to display.
+	Gtk::Image *cards_[4][13]; // Images to display
 
 	Gtk::Button startButton_;
 	Gtk::Button endButton_;

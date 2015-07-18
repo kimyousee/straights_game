@@ -21,10 +21,6 @@ Model::Model(){
 	game_ = NULL;
 }
 
-// Table* Model::getTable(){
-// 	return game_;
-// }
-
 State Model::getState(){
 	return state_;
 }
@@ -172,7 +168,7 @@ void Model::discard(Card card){
 	checkEndGame_();
 }
 
-// Prints out the deck
+// // Prints out the deck
 // void Model::deck(){
 // 	deck_->printDeck();
 // 	outputHuman_ = false;
@@ -265,8 +261,6 @@ void Model::cpuPlayOrDiscard_(){
 	if (!playedCard){
 		discard(*(hand[0]));
 	}
-	//state_ = CPU_TURN;
-	//notify();
 }
 
 int Model::getNumLegalPlays(){
@@ -373,9 +367,6 @@ void Model::outputEndGame_(){
 		p->clearDiscards();
 
 	}
-
-	// state_ = SHOW_POINTS;
-	// notify();
 
 	output_scores_ = ss.str();
 	// Output winners if points are greater than 80

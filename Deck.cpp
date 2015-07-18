@@ -25,6 +25,7 @@ Deck::Deck(int seed) {
 	}
 }
 
+// Destructor
 Deck::~Deck(){
 	while (!cards_.empty()){
 		delete cards_.back();
@@ -42,7 +43,7 @@ void Deck::dealCards(std::vector<Player*> players) {
 	}
 }
 
-
+// Used for the deck command
 void Deck::printDeck(){
 	int card = 0;
 	for (int i = 0; i < 4; i++){

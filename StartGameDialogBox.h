@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+// A dialog box that appears when the user clicks on the "Start New Game" button
+// This dialog lets the user set the seed and
+// the type of each player (ie Human Player or Computer Player)
 class StartGameDialogBox : Gtk::Dialog {
 public:
 	StartGameDialogBox(Gtk::Window & parentWindow, std::string title);

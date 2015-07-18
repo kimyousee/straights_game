@@ -123,12 +123,10 @@ View::View(Controller *c, Model *m) : model_(m), controller_(c), hand_(true,10),
 
 	// Register view as observer of model
 	model_->subscribe(this);
-	controller_->initEmptyGame();
 
 	// The final step is to display the buttons (they display themselves)
 	show_all();
-	//update();
-} // View::View
+}
 
 // Destructor
 View::~View() {}
@@ -239,7 +237,7 @@ void View::update_scores_() {
 }
 
 void View::increment_discards_() {
-	int i = get_current_player_number();
+	int i = get_current_player_number_();
 	pDiscards_[i] += 1;
 	stringstream ss; ss << pDiscards_[i];
 	playerDiscards_[i]->set_label(ss.str() + " discards");
@@ -269,13 +267,11 @@ void View::clear_table_(bool continueGame) {
 	playerTurn_->set_label( " " );
 
 	playerLegalCards_->set_label ( " " );
-	if (!continueGame){
-		controller_->initEmptyGame();
-	}
+
 }
 
 void View::set_rage_button_(bool enable) {
-	int playerNumber = get_current_player_number();
+	int playerNumber = get_current_player_number_();
 	string pType = playerTypes_[playerNumber];
 	if (enable && pType == "h") {
 		playerRagequit_[playerNumber].set_sensitive(true);
@@ -284,12 +280,12 @@ void View::set_rage_button_(bool enable) {
 	}
 }
 
-int View::get_current_player_number() {
+int View::get_current_player_number_() {
 	return model_->getCurrentPlayer()->getPlayerNumber() -1;
 }
 
 void View::check_cpu_turn_() {
-	string pType = playerTypes_[get_current_player_number()];
+	string pType = playerTypes_[get_current_player_number_()];
 	if (pType == "c")
 		model_->cpuTurn();
 }
@@ -335,7 +331,7 @@ void View::update() {
 			//disable_rage_button_();
 			break;
 		case INCR_PLAYER:
-			// cout << "player type: " << playerTypes_[get_current_player_number()] << endl;
+			// cout << "player type: " << playerTypes_[get_current_player_number_()] << endl;
 			set_rage_button_(true);
 			display_current_hand_(); //Display the next player's hand
 			check_cpu_turn_();

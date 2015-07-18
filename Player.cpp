@@ -34,7 +34,6 @@ vector<Card*> Player::getDiscardedHand() {
 	return playerDiscards_;
 }
 
-
 void Player::incrementPlayerHand(Card* card) {
 	playerHand_.push_back(card);
 }
@@ -64,4 +63,4 @@ int Player::calcPlayerPoints() {
 		tempPoints += (*it)->getRankInt()+1;
 	}
 	return (tempPoints);
-} 
+}

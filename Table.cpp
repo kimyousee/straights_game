@@ -14,12 +14,12 @@ Table::Table(std::vector<std::string> playerTypes) {
 		} else if (playerTypes[i] == "c") {
 			listOfPlayers_.push_back(new ComputerPlayer(i+1));
 		}
-    }
+	}
 
-    // Create playedCards
-    playedCards_ = new vector<vector<int> >(4, vector<int>(13,0));
-    (*playedCards_)[3][6] = 2; // Make 7S spot a legal play
-    
+	// Create playedCards
+	playedCards_ = new vector<vector<int> >(4, vector<int>(13,0));
+	(*playedCards_)[3][6] = 2; // Make 7S spot a legal play
+
 }
 
 Table::~Table(){
