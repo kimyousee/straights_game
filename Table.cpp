@@ -23,7 +23,6 @@ Table::Table(std::vector<std::string> playerTypes) {
 }
 
 Table::~Table(){
-	cout << listOfPlayers_.size() << endl;
 	while (!listOfPlayers_.empty()){
 		delete listOfPlayers_.back();
 		listOfPlayers_.pop_back();

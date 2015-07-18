@@ -18,6 +18,7 @@ Model::Model(){
 	passes_ = 0;
 	outputHuman_ = true;
 	winner_ = 0;
+	game_ = NULL;
 }
 
 // Table* Model::getTable(){
@@ -212,7 +213,7 @@ Card* Model::getCardClicked(int i){
 void Model::checkEndGame_(){
 	vector<Card*> nextHand = game_->currentPlayer()->getPlayerHand();
 	passes_ = 0;
-	cout << "Turn count:" << turnCount_ << endl;
+	// cout << "Turn count:" << turnCount_ << endl;
 	if (turnCount_ % 55 == 0) return; 
 	// If the next player is out of the game, proceed to next player
 	if (nextHand.size() == 0) {

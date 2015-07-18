@@ -21,7 +21,7 @@ enum State { INIT_GAME, START_GAME, END_GAME, GAME_FINISHED, GAME_RESET, SHOW_PO
 class Model : public Subject {
 public:
 	Model();
-	~Model(){ delete game_; }
+	~Model(){ if (game_ != NULL) delete game_; }
 
 	// Commands called from controller
 	void start(int);
